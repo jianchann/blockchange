@@ -1,207 +1,19 @@
-
+/*Web 3 Part
+ ***************************
+                            */
 var web3 = new Web3(new Web3.providers.WebsocketProvider('wss://k0hgjmdgbf:JqpK-H_0td3PwEsionKMZhYQV1yWwM4QuqbffIYg6BI@k0azo7vjl7-k0j5nu609n-wss.kr0-aws.kaleido.io'));
 web3.eth.defaultAccount = '0x04f24283e3ec28456e99479126a2e2eb12546079';
 
-/*let deployment = async () => {
-	let abi = [
-	{
-		"constant": true,
-		"inputs": [
-			{
-				"name": "id",
-				"type": "uint256"
-			}
-		],
-		"name": "getObjectName",
-		"outputs": [
-			{
-				"name": "",
-				"type": "string"
-			}
-		],
-		"payable": false,
-		"stateMutability": "view",
-		"type": "function"
-	},
-	{
-		"constant": false,
-		"inputs": [
-			{
-				"name": "serial",
-				"type": "uint256"
-			}
-		],
-		"name": "recallParts",
-		"outputs": [],
-		"payable": false,
-		"stateMutability": "nonpayable",
-		"type": "function"
-	},
-	{
-		"constant": false,
-		"inputs": [
-			{
-				"name": "name",
-				"type": "string"
-			},
-			{
-				"name": "date",
-				"type": "string"
-			}
-		],
-		"name": "addObject",
-		"outputs": [],
-		"payable": false,
-		"stateMutability": "nonpayable",
-		"type": "function"
-	},
-	{
-		"constant": false,
-		"inputs": [
-			{
-				"name": "id",
-				"type": "uint256"
-			},
-			{
-				"name": "serial",
-				"type": "uint256"
-			},
-			{
-				"name": "name",
-				"type": "string"
-			}
-		],
-		"name": "addPartstoObject",
-		"outputs": [],
-		"payable": false,
-		"stateMutability": "nonpayable",
-		"type": "function"
-	},
-	{
-		"constant": true,
-		"inputs": [
-			{
-				"name": "id",
-				"type": "uint256"
-			}
-		],
-		"name": "getObjectDate",
-		"outputs": [
-			{
-				"name": "",
-				"type": "string"
-			}
-		],
-		"payable": false,
-		"stateMutability": "view",
-		"type": "function"
-	},
-	{
-		"inputs": [],
-		"payable": false,
-		"stateMutability": "nonpayable",
-		"type": "constructor"
-	},
-	{
-		"anonymous": false,
-		"inputs": [
-			{
-				"indexed": false,
-				"name": "serial",
-				"type": "uint256"
-			}
-		],
-		"name": "Recall",
-		"type": "event"
-	}
-];
-	let bytecode = {
-		data: '0x608060405234801561001057600080fd5b5060006002819055506107cd806100286000396000f3fe608060405234801561001057600080fd5b5060043610610074576000357c010000000000000000000000000000000000000000000000000000000090048063202c9094146100795780632bcabb8e1461012057806351f813521461014e5780636af8c1ab146102a05780639b8c341a1461036f575b600080fd5b6100a56004803603602081101561008f57600080fd5b8101908080359060200190929190505050610416565b6040518080602001828103825283818151815260200191508051906020019080838360005b838110156100e55780820151818401526020810190506100ca565b50505050905090810190601f1680156101125780820380516001836020036101000a031916815260200191505b509250505060405180910390f35b61014c6004803603602081101561013657600080fd5b81019080803590602001909291905050506104cd565b005b61029e6004803603604081101561016457600080fd5b810190808035906020019064010000000081111561018157600080fd5b82018360208201111561019357600080fd5b803590602001918460018302840111640100000000831117156101b557600080fd5b91908080601f016020809104026020016040519081016040528093929190818152602001838380828437600081840152601f19601f8201169050808301925050505050505091929192908035906020019064010000000081111561021857600080fd5b82018360208201111561022a57600080fd5b8035906020019184600183028401116401000000008311171561024c57600080fd5b91908080601f016020809104026020016040519081016040528093929190818152602001838380828437600081840152601f19601f820116905080830192505050505050509192919290505050610507565b005b61036d600480360360608110156102b657600080fd5b810190808035906020019092919080359060200190929190803590602001906401000000008111156102e757600080fd5b8201836020820111156102f957600080fd5b8035906020019184600183028401116401000000008311171561031b57600080fd5b91908080601f016020809104026020016040519081016040528093929190818152602001838380828437600081840152601f19601f8201169050808301925050505050505091929192905050506105a5565b005b61039b6004803603602081101561038557600080fd5b8101908080359060200190929190505050610645565b6040518080602001828103825283818151815260200191508051906020019080838360005b838110156103db5780820151818401526020810190506103c0565b50505050905090810190601f1680156104085780820380516001836020036101000a031916815260200191505b509250505060405180910390f35b60606000808381526020019081526020016000206001018054600181600116156101000203166002900480601f0160208091040260200160405190810160405280929190818152602001828054600181600116156101000203166002900480156104c15780601f10610496576101008083540402835291602001916104c1565b820191906000526020600020905b8154815290600101906020018083116104a457829003601f168201915b50505050509050919050565b7f9613976b8f9eedf47ea9e8b209879e23f6192a3ccd3ed60925b11bd6e4136013816040518082815260200191505060405180910390a150565b600260008154600101919050819055506080604051908101604052806002548152602001838152602001828152602001600081525060008060025481526020019081526020016000206000820151816000015560208201518160010190805190602001906105769291906106fc565b5060408201518160020190805190602001906105939291906106fc565b50606082015181600301559050505050565b600080848152602001908152602001600020600301600081546001019190508190555060408051908101604052808381526020018281525060016000858152602001908152602001600020600080600087815260200190815260200160002060030154815260200190815260200160002060008201518160000155602082015181600101908051906020019061063c9291906106fc565b50905050505050565b60606000808381526020019081526020016000206002018054600181600116156101000203166002900480601f0160208091040260200160405190810160405280929190818152602001828054600181600116156101000203166002900480156106f05780601f106106c5576101008083540402835291602001916106f0565b820191906000526020600020905b8154815290600101906020018083116106d357829003601f168201915b50505050509050919050565b828054600181600116156101000203166002900490600052602060002090601f016020900481019282601f1061073d57805160ff191683800117855561076b565b8280016001018555821561076b579182015b8281111561076a57825182559160200191906001019061074f565b5b509050610778919061077c565b5090565b61079e91905b8082111561079a576000816000905550600101610782565b5090565b9056fea165627a7a72305820f8cc6173088cf5e81136cbffe72c283a9862dfbd0db44449260174e7e32e9a7e0029'
-	};
-	let contract = new web3.eth.Contract(abi);
-	let deployContractTx = contract.deploy(bytecode);
-
-	let calculatedGas = await deployContractTx.estimateGas({
-		from: web3.eth.defaultAccount
-	});
-
-	await deployContractTx.send({
-		from: web3.eth.defaultAccount,
-		gas: calculatedGas
-	});
-}
-
-deployment();*/
-
 let abi = [
 	{
-		"constant": true,
-		"inputs": [
-			{
-				"name": "id",
-				"type": "uint256"
-			}
-		],
-		"name": "getObjectName",
-		"outputs": [
-			{
-				"name": "",
-				"type": "string"
-			}
-		],
-		"payable": false,
-		"stateMutability": "view",
-		"type": "function"
-	},
-	{
 		"constant": false,
 		"inputs": [
 			{
-				"name": "serial",
-				"type": "uint256"
-			}
-		],
-		"name": "recallParts",
-		"outputs": [],
-		"payable": false,
-		"stateMutability": "nonpayable",
-		"type": "function"
-	},
-	{
-		"constant": false,
-		"inputs": [
-			{
-				"name": "name",
-				"type": "string"
-			},
-			{
-				"name": "date",
+				"name": "new_state",
 				"type": "string"
 			}
 		],
-		"name": "addObject",
-		"outputs": [],
-		"payable": false,
-		"stateMutability": "nonpayable",
-		"type": "function"
-	},
-	{
-		"constant": false,
-		"inputs": [
-			{
-				"name": "id",
-				"type": "uint256"
-			},
-			{
-				"name": "serial",
-				"type": "uint256"
-			},
-			{
-				"name": "name",
-				"type": "string"
-			}
-		],
-		"name": "addPartstoObject",
+		"name": "addLand",
 		"outputs": [],
 		"payable": false,
 		"stateMutability": "nonpayable",
@@ -209,13 +21,8 @@ let abi = [
 	},
 	{
 		"constant": true,
-		"inputs": [
-			{
-				"name": "id",
-				"type": "uint256"
-			}
-		],
-		"name": "getObjectDate",
+		"inputs": [],
+		"name": "state",
 		"outputs": [
 			{
 				"name": "",
@@ -231,38 +38,158 @@ let abi = [
 		"payable": false,
 		"stateMutability": "nonpayable",
 		"type": "constructor"
-	},
-	{
-		"anonymous": false,
-		"inputs": [
-			{
-				"indexed": false,
-				"name": "serial",
-				"type": "uint256"
-			}
-		],
-		"name": "Recall",
-		"type": "event"
 	}
 ];
 
 var contract = new web3.eth.Contract(abi);
 
-contract.options.address = '0x336c620bd76617a034ebb180f4eb63accbc4ecc7';
+contract.options.address = '0xfbff58ff65975b865d0fe6ac0efd292aef70f741';
 
-let addObj = async (name, date) => {
-	let fCall = contract.methods.addObject(name, date);
+let addplot = async (new_state) => {
+  let fCall = contract.methods.addLand(new_state);
 
-	let calculatedGas = await fCall.estimateGas();
+  let calculatedGas = await fCall.estimateGas();
 
-	await fCall.send({
-		from: web3.eth.defaultAccount,
-		gas: calculatedGas
-	});
+  await fCall.send({
+    from: web3.eth.defaultAccount,
+    gas: calculatedGas
+  });
 }
 
-function getObjName(id) {
-	contract.methods.getObjectName(id).call().then(console.log);
+
+/*Map openlayers
+  ****************************
+                              */
+
+
+function loadMap(e) {
+  var geojson = new ol.format.GeoJSON();
+  var feature = geojson.readFeatures(e);
+
+  var raster = new ol.layer.Tile({
+    source: new ol.source.OSM()
+  });
+
+  var source = new ol.source.Vector({
+    features: feature,
+    overlaps: false
+  });
+
+  var highlight = new ol.style.Style({
+    fill: new ol.style.Fill ({
+      color: 'rgba(255, 255, 255, 0.7)'
+    }),
+    stroke: new ol.style.Stroke({
+      color: '#FFFFFF',
+      width: 3
+    })
+  });
+
+  /*var totalFeatures = source.getFeatures();
+  var total = totalFeatures.length;*/
+
+  var vector = new ol.layer.Vector({
+    source: source,
+    style: new ol.style.Style({
+      fill: new ol.style.Fill({
+        color: 'rgba(255, 255, 255, 0.2)'
+      }),
+      stroke: new ol.style.Stroke({
+        color: '#CCCCCC',
+        width: 2
+      }),
+      image: new ol.style.Circle({
+        radius: 7,
+        fill: new ol.style.Fill({
+          color: '#ffcc33'
+        })
+      })
+    })
+  });
+
+  var map = new ol.Map({
+    layers: [raster, vector],
+    target: 'map',
+    view: new ol.View({
+      center: ol.proj.fromLonLat([121.033125, 14.391049]),
+      zoom: 17
+    })
+  });
+
+  var raster2 = new ol.layer.Tile({
+    source: new ol.source.OSM()
+  });
+
+  var source2 = new ol.source.Vector({
+    overlaps: false
+  });
+
+  var selected = null;
+
+  var highlighting = function (e) {
+    if (selected !== null) {
+      selected.setStyle(undefined);
+      selected = null;
+    }
+
+    map.forEachFeatureAtPixel(e.pixel, function(f) {
+      selected = f;
+      selected.setStyle(highlight);
+      return true;
+    });
+  }
+
+  var draw, snap;
+  var modify = new ol.interaction.Modify({
+    condition: ol.events.condition.never,
+    deleteCondition: ol.events.condition.never,
+    insertVertexCondition: ol.events.condition.never,
+    source: source});
+  map.addInteraction(modify);
+
+  function addInteractions() {
+    draw = new ol.interaction.Draw({
+      source: source,
+      type: 'Polygon'
+    });
+    /*draw.on('drawend', (event) => {
+      total = total + 1;
+      event.feature.setId(total);
+    });*/
+
+    map.addInteraction(draw);
+    snap = new ol.interaction.Snap({source: source});
+    map.addInteraction(snap);
+  }
+
+  addInteractions();
+  window.addEventListener("click", (event) => {
+    let btn = event.target;
+    if (btn.id == "feat") {
+      let features = source.getFeatures();
+      let new_state = geojson.writeFeatures(features);
+      addplot(new_state);
+    }
+    if (btn.id == "view-draw") {
+      if (btn.innerHTML == "View") {
+        map.removeInteraction(draw);
+        map.removeInteraction(snap);
+        map.removeInteraction(modify);
+        btn.innerHTML = "Draw";
+        map.on('pointermove', highlighting);
+      } else {
+        map.addInteraction(draw);
+        map.addInteraction(snap);
+        map.addInteraction(modify);
+        btn.innerHTML = "View";
+        map.un('pointermove', highlighting);
+        if (selected !== null ) {
+          selected.setStyle(undefined);
+        }
+        selected = null;
+      }
+    }
+  });
 }
 
-getObjName(1);
+contract.methods.state().call().then((e) => {loadMap(e)});
