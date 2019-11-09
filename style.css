@@ -7,6 +7,7 @@
 	height: 100%;
 }
 
+
 .container {
 	position: absolute;
 	top: 0;
@@ -72,6 +73,26 @@
 	cursor: pointer;
 }
 
+.buttons {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	width: 100%;
+}
+
+.buttons .button {
+	margin-right: 20px;
+}
+
+.buttons input[type="text"] {
+	border: solid 1px #ccc;
+	border-radius: 5px;
+	padding-left: 5px;
+	font-size: 18px;
+	font-family: "Oswald", sans-serif;
+	margin-right: 20px;
+}
+
 .button:hover {
 	font-size: 22.5px;
 }
@@ -96,6 +117,18 @@
 }
 
 .map {
-	width: 75%;
-	height: 75%;
+	width: 100%;
+	height: 70%;
+}
+
+.land-id {
+	position: absolute;
+
+	padding: 5px;
+	font-size: 16px;
+	font-family: "Oswald", sans-serif;
+	color: black;
+
+	bottom: .5em;
+	left: .5em;
 }

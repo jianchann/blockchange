@@ -23,7 +23,7 @@ contract Land is ERC721 {
     mapping (uint => Bids) bids;
 
     address private owner;
-    uint landCount;
+    uint public landCount;
     string public state;
 
     constructor () public {
@@ -60,23 +60,30 @@ contract Land is ERC721 {
 
         transferFrom(landowner, bidder, id);
     }
-
+    /*
     function viewBidPrice(uint id, uint bidNo) public view returns (uint) {
-        require(sellable[id]);  /* Check if LandPiece is for sale */
-        require(bidNo != 0);    /* Bids start with 1 */
-        require(bidNo <= bids[id].bidCount);    /* Bid exists for current selling iteration */
-        require(ownerOf(id) == msg.sender); /* Check if account accepting the bid is the id owner */
+        require(sellable[id]);
+        require(bidNo != 0);
+        require(bidNo <= bids[id].bidCount);
+        require(ownerOf(id) == msg.sender);
 
-        return bids[id].bidPrices[bidNo];
+        uint price = bids[id].bidPrices[bidNo];
+
+        return price;
     }
 
-    function viewBidCount(uint id, uint bidNo) public view returns (uint) {
-        require(sellable[id]);  /* Check if LandPiece is for sale */
-        require(bidNo != 0);    /* Bids start with 1 */
-        require(bidNo <= bids[id].bidCount);    /* Bid exists for current selling iteration */
-        require(ownerOf(id) == msg.sender); /* Check if account accepting the bid is the id owner */
+    function viewBidCount(uint id, uint bidNo) public view returns uint {
+        require(sellable[id]);
+        require(bidNo != 0);
+        require(bidNo <= bids[id].bidCount);
+        require(ownerOf(id) == msg.sender);
 
         return bids[id].bidCount;
+    }
+    */
+
+    function isSellable(uint id) public view returns (bool) {
+        return (sellable[id]);
     }
 
     function sellStart(uint id, uint price) public {
