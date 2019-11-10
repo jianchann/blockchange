@@ -60,7 +60,7 @@ contract Land is ERC721 {
 
         transferFrom(landowner, bidder, id);
     }
-    /*
+
     function viewBidPrice(uint id, uint bidNo) public view returns (uint) {
         require(sellable[id]);
         require(bidNo != 0);
@@ -72,7 +72,7 @@ contract Land is ERC721 {
         return price;
     }
 
-    function viewBidCount(uint id, uint bidNo) public view returns uint {
+    function viewBidCount(uint id, uint bidNo) public view returns (uint) {
         require(sellable[id]);
         require(bidNo != 0);
         require(bidNo <= bids[id].bidCount);
@@ -80,7 +80,7 @@ contract Land is ERC721 {
 
         return bids[id].bidCount;
     }
-    */
+
 
     function isSellable(uint id) public view returns (bool) {
         return (sellable[id]);
@@ -109,6 +109,12 @@ contract Land is ERC721 {
         emit Approval(landowner, address(this), id);
     }
 
+    function getPrice(uint id) public view returns (uint) {
+        require(sellable[id]);
+
+        return landpieces[id].price;
+    }
+
     function withdraw() public {
         address payable account = msg.sender;
         uint balance = withdrawable[account];
@@ -116,6 +122,10 @@ contract Land is ERC721 {
         require(balance != 0);
 
         account.transfer(balance);
+    }
+
+    function getBalance() public view returns (uint) {
+        return withdrawable[msg.sender];
     }
 
     function burnLand(uint id) public {
@@ -136,6 +146,6 @@ contract Land is ERC721 {
         bids[id].bidPrices[bidNo] = bidPrice;
 
         /* Store bid value to account */
-        withdrawable[bidder] = bidPrice;
+        withdrawable[bidder] += bidPrice;
     }
 }
