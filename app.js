@@ -7,6 +7,25 @@ web3.eth.defaultAccount = '0x04f24283e3ec28456e99479126a2e2eb12546079';
 
 let abi = [
 	{
+		"constant": true,
+		"inputs": [
+			{
+				"name": "interfaceId",
+				"type": "bytes4"
+			}
+		],
+		"name": "supportsInterface",
+		"outputs": [
+			{
+				"name": "",
+				"type": "bool"
+			}
+		],
+		"payable": false,
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
 		"constant": false,
 		"inputs": [
 			{
@@ -25,25 +44,22 @@ let abi = [
 		"type": "function"
 	},
 	{
-		"constant": false,
+		"constant": true,
 		"inputs": [
 			{
-				"name": "name",
-				"type": "string"
-			},
-			{
-				"name": "to",
-				"type": "address"
-			},
-			{
-				"name": "new_state",
-				"type": "string"
+				"name": "tokenId",
+				"type": "uint256"
 			}
 		],
-		"name": "addLand",
-		"outputs": [],
+		"name": "getApproved",
+		"outputs": [
+			{
+				"name": "",
+				"type": "address"
+			}
+		],
 		"payable": false,
-		"stateMutability": "nonpayable",
+		"stateMutability": "view",
 		"type": "function"
 	},
 	{
@@ -65,129 +81,17 @@ let abi = [
 		"type": "function"
 	},
 	{
-		"constant": false,
-		"inputs": [
+		"constant": true,
+		"inputs": [],
+		"name": "getBalance",
+		"outputs": [
 			{
-				"name": "id",
+				"name": "",
 				"type": "uint256"
 			}
 		],
-		"name": "bid",
-		"outputs": [],
-		"payable": true,
-		"stateMutability": "payable",
-		"type": "function"
-	},
-	{
-		"constant": false,
-		"inputs": [
-			{
-				"name": "id",
-				"type": "uint256"
-			}
-		],
-		"name": "burnLand",
-		"outputs": [],
 		"payable": false,
-		"stateMutability": "nonpayable",
-		"type": "function"
-	},
-	{
-		"constant": false,
-		"inputs": [
-			{
-				"name": "from",
-				"type": "address"
-			},
-			{
-				"name": "to",
-				"type": "address"
-			},
-			{
-				"name": "tokenId",
-				"type": "uint256"
-			}
-		],
-		"name": "safeTransferFrom",
-		"outputs": [],
-		"payable": false,
-		"stateMutability": "nonpayable",
-		"type": "function"
-	},
-	{
-		"constant": false,
-		"inputs": [
-			{
-				"name": "from",
-				"type": "address"
-			},
-			{
-				"name": "to",
-				"type": "address"
-			},
-			{
-				"name": "tokenId",
-				"type": "uint256"
-			},
-			{
-				"name": "_data",
-				"type": "bytes"
-			}
-		],
-		"name": "safeTransferFrom",
-		"outputs": [],
-		"payable": false,
-		"stateMutability": "nonpayable",
-		"type": "function"
-	},
-	{
-		"constant": false,
-		"inputs": [
-			{
-				"name": "id",
-				"type": "uint256"
-			}
-		],
-		"name": "sellEnd",
-		"outputs": [],
-		"payable": false,
-		"stateMutability": "nonpayable",
-		"type": "function"
-	},
-	{
-		"constant": false,
-		"inputs": [
-			{
-				"name": "id",
-				"type": "uint256"
-			},
-			{
-				"name": "price",
-				"type": "uint256"
-			}
-		],
-		"name": "sellStart",
-		"outputs": [],
-		"payable": false,
-		"stateMutability": "nonpayable",
-		"type": "function"
-	},
-	{
-		"constant": false,
-		"inputs": [
-			{
-				"name": "to",
-				"type": "address"
-			},
-			{
-				"name": "approved",
-				"type": "bool"
-			}
-		],
-		"name": "setApprovalForAll",
-		"outputs": [],
-		"payable": false,
-		"stateMutability": "nonpayable",
+		"stateMutability": "view",
 		"type": "function"
 	},
 	{
@@ -219,6 +123,327 @@ let abi = [
 		"outputs": [],
 		"payable": false,
 		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"constant": false,
+		"inputs": [
+			{
+				"name": "from",
+				"type": "address"
+			},
+			{
+				"name": "to",
+				"type": "address"
+			},
+			{
+				"name": "tokenId",
+				"type": "uint256"
+			}
+		],
+		"name": "safeTransferFrom",
+		"outputs": [],
+		"payable": false,
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"constant": false,
+		"inputs": [
+			{
+				"name": "id",
+				"type": "uint256"
+			}
+		],
+		"name": "bid",
+		"outputs": [],
+		"payable": true,
+		"stateMutability": "payable",
+		"type": "function"
+	},
+	{
+		"constant": true,
+		"inputs": [
+			{
+				"name": "tokenId",
+				"type": "uint256"
+			}
+		],
+		"name": "ownerOf",
+		"outputs": [
+			{
+				"name": "",
+				"type": "address"
+			}
+		],
+		"payable": false,
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"constant": false,
+		"inputs": [
+			{
+				"name": "id",
+				"type": "uint256"
+			}
+		],
+		"name": "burnLand",
+		"outputs": [],
+		"payable": false,
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"constant": false,
+		"inputs": [
+			{
+				"name": "name",
+				"type": "string"
+			},
+			{
+				"name": "to",
+				"type": "address"
+			},
+			{
+				"name": "new_state",
+				"type": "string"
+			}
+		],
+		"name": "addLand",
+		"outputs": [],
+		"payable": false,
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"constant": true,
+		"inputs": [
+			{
+				"name": "owner",
+				"type": "address"
+			}
+		],
+		"name": "balanceOf",
+		"outputs": [
+			{
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"payable": false,
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"constant": false,
+		"inputs": [
+			{
+				"name": "to",
+				"type": "address"
+			},
+			{
+				"name": "approved",
+				"type": "bool"
+			}
+		],
+		"name": "setApprovalForAll",
+		"outputs": [],
+		"payable": false,
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"constant": false,
+		"inputs": [
+			{
+				"name": "id",
+				"type": "uint256"
+			},
+			{
+				"name": "price",
+				"type": "uint256"
+			}
+		],
+		"name": "sellStart",
+		"outputs": [],
+		"payable": false,
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"constant": true,
+		"inputs": [
+			{
+				"name": "id",
+				"type": "uint256"
+			}
+		],
+		"name": "isSellable",
+		"outputs": [
+			{
+				"name": "",
+				"type": "bool"
+			}
+		],
+		"payable": false,
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"constant": false,
+		"inputs": [
+			{
+				"name": "from",
+				"type": "address"
+			},
+			{
+				"name": "to",
+				"type": "address"
+			},
+			{
+				"name": "tokenId",
+				"type": "uint256"
+			},
+			{
+				"name": "_data",
+				"type": "bytes"
+			}
+		],
+		"name": "safeTransferFrom",
+		"outputs": [],
+		"payable": false,
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"constant": true,
+		"inputs": [],
+		"name": "state",
+		"outputs": [
+			{
+				"name": "",
+				"type": "string"
+			}
+		],
+		"payable": false,
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"constant": true,
+		"inputs": [
+			{
+				"name": "id",
+				"type": "uint256"
+			},
+			{
+				"name": "bidNo",
+				"type": "uint256"
+			}
+		],
+		"name": "viewBidCount",
+		"outputs": [
+			{
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"payable": false,
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"constant": false,
+		"inputs": [
+			{
+				"name": "id",
+				"type": "uint256"
+			}
+		],
+		"name": "sellEnd",
+		"outputs": [],
+		"payable": false,
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"constant": true,
+		"inputs": [],
+		"name": "landCount",
+		"outputs": [
+			{
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"payable": false,
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"constant": true,
+		"inputs": [
+			{
+				"name": "id",
+				"type": "uint256"
+			},
+			{
+				"name": "bidNo",
+				"type": "uint256"
+			}
+		],
+		"name": "viewBidPrice",
+		"outputs": [
+			{
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"payable": false,
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"constant": true,
+		"inputs": [
+			{
+				"name": "id",
+				"type": "uint256"
+			}
+		],
+		"name": "getPrice",
+		"outputs": [
+			{
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"payable": false,
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"constant": true,
+		"inputs": [
+			{
+				"name": "owner",
+				"type": "address"
+			},
+			{
+				"name": "operator",
+				"type": "address"
+			}
+		],
+		"name": "isApprovedForAll",
+		"outputs": [
+			{
+				"name": "",
+				"type": "bool"
+			}
+		],
+		"payable": false,
+		"stateMutability": "view",
 		"type": "function"
 	},
 	{
@@ -292,158 +517,12 @@ let abi = [
 		],
 		"name": "ApprovalForAll",
 		"type": "event"
-	},
-	{
-		"constant": true,
-		"inputs": [
-			{
-				"name": "owner",
-				"type": "address"
-			}
-		],
-		"name": "balanceOf",
-		"outputs": [
-			{
-				"name": "",
-				"type": "uint256"
-			}
-		],
-		"payable": false,
-		"stateMutability": "view",
-		"type": "function"
-	},
-	{
-		"constant": true,
-		"inputs": [
-			{
-				"name": "tokenId",
-				"type": "uint256"
-			}
-		],
-		"name": "getApproved",
-		"outputs": [
-			{
-				"name": "",
-				"type": "address"
-			}
-		],
-		"payable": false,
-		"stateMutability": "view",
-		"type": "function"
-	},
-	{
-		"constant": true,
-		"inputs": [
-			{
-				"name": "owner",
-				"type": "address"
-			},
-			{
-				"name": "operator",
-				"type": "address"
-			}
-		],
-		"name": "isApprovedForAll",
-		"outputs": [
-			{
-				"name": "",
-				"type": "bool"
-			}
-		],
-		"payable": false,
-		"stateMutability": "view",
-		"type": "function"
-	},
-	{
-		"constant": true,
-		"inputs": [
-			{
-				"name": "id",
-				"type": "uint256"
-			}
-		],
-		"name": "isSellable",
-		"outputs": [
-			{
-				"name": "",
-				"type": "bool"
-			}
-		],
-		"payable": false,
-		"stateMutability": "view",
-		"type": "function"
-	},
-	{
-		"constant": true,
-		"inputs": [],
-		"name": "landCount",
-		"outputs": [
-			{
-				"name": "",
-				"type": "uint256"
-			}
-		],
-		"payable": false,
-		"stateMutability": "view",
-		"type": "function"
-	},
-	{
-		"constant": true,
-		"inputs": [
-			{
-				"name": "tokenId",
-				"type": "uint256"
-			}
-		],
-		"name": "ownerOf",
-		"outputs": [
-			{
-				"name": "",
-				"type": "address"
-			}
-		],
-		"payable": false,
-		"stateMutability": "view",
-		"type": "function"
-	},
-	{
-		"constant": true,
-		"inputs": [],
-		"name": "state",
-		"outputs": [
-			{
-				"name": "",
-				"type": "string"
-			}
-		],
-		"payable": false,
-		"stateMutability": "view",
-		"type": "function"
-	},
-	{
-		"constant": true,
-		"inputs": [
-			{
-				"name": "interfaceId",
-				"type": "bytes4"
-			}
-		],
-		"name": "supportsInterface",
-		"outputs": [
-			{
-				"name": "",
-				"type": "bool"
-			}
-		],
-		"payable": false,
-		"stateMutability": "view",
-		"type": "function"
 	}
 ];
 
 var contract = new web3.eth.Contract(abi);
 
-contract.options.address = '0x80f2d910ce8a425083b0980777d2caf0e564c8c8';
+contract.options.address = '0x9320724eb218224d4db01dd7ea5f962b7d1849d4';
 
 let addplot = async (name, to, new_state) => {
   let fCall = contract.methods.addLand(name, to, new_state);
@@ -467,7 +546,33 @@ let sellLand = async (id, price) => {
 			from: web3.eth.defaultAccount,
 			gas: e
 		});
-	})
+	});
+}
+
+let bid = async (id, value) => {
+	let fCall = contract.methods.bid(id);
+	fCall.estimateGas({
+		from: web3.eth.defaultAccount,
+		value: value
+	}).then((e) => {
+		fCall.send({
+			from: web3.eth.defaultAccount,
+			gas: e,
+			value: value
+		});
+	});
+}
+
+let accept_bid = async (id, bidNo) => {
+	let fCall = contract.methods.acceptBid(id, bidNo);
+	fCall.estimateGas({
+		from: web3.eth.defaultAccount
+	}).then((e) => {
+		fCall.send({
+			from: web3.eth.defaultAccount,
+			gas: e,
+		});
+	});
 }
 
 
@@ -566,8 +671,10 @@ function loadMap(e, f) {
 							clickedLand = selected.getArray()[0].getId();
 							contract.methods.isSellable(clickedLand).call().then((e) => {
 								if (e) {
-									ol_id.innerHTML = "Land ID: " + clickedLand + " - Up for sale";
-									ol_cont.append(ol_id);
+									contract.methods.getPrice(clickedLand).call().then((f) => {
+										ol_id.innerHTML = "Land ID: " + clickedLand + " - Sale for " + f + " wei";
+										ol_cont.append(ol_id);
+									})
 								} else {
 									ol_id.innerHTML = "Land ID: " + clickedLand;
 									ol_cont.append(ol_id);
@@ -579,6 +686,7 @@ function loadMap(e, f) {
 			}
 		} else {
 			selected = null;
+			clickedLand = 0;
 			ol_cont.innerHTML = "";
 		}
 	});
@@ -634,6 +742,14 @@ function loadMap(e, f) {
 			let price = parseInt(document.querySelector("#sell-price").value);
 			sellLand(clickedLand, price);
 		}
+		if (btn.id == "bid") {
+			let bidPrice = parseInt(document.querySelector("#bid-price").value);
+			bid(clickedLand, bidPrice);
+		}
+		if (btn.id == "acc-bid") {
+			let bidNo = parseInt(document.querySelector("#bid-no").value);
+			accept_bid(clickedLand, bidNo);
+		}
   });
 }
 
@@ -671,13 +787,20 @@ function loadIndex() {
 	accounts.append(account1);
 	accounts.append(account2);
 	accounts.append(account3);
+	let account_cont = document.createElement("div");
+	account_cont.className = "gen";
+	let acc_bal = document.createElement("p");
+	acc_bal.className = "balance";
+
+	let button_container1 = document.createElement("div");
+	button_container1.className = "buttons";
 
 	let map = document.createElement("div");
 	map.className = "map";
 	map.id = "map";
 
-	let button_container = document.createElement("div");
-	button_container.className = "buttons";
+	let button_container2 = document.createElement("div");
+	button_container2.className = "buttons";
 
 	let save_land = document.createElement("button");
 	save_land.id = "feat";
@@ -706,23 +829,56 @@ function loadIndex() {
 
 	let sell_price = document.createElement("input");
 	sell_price.type = "text";
-	sell_price.id = "sell-price"
-	sell_price.placeholder = "Price"
+	sell_price.id = "sell-price";
+	sell_price.placeholder = "Price";
 
-	button_container.appendChild(save_land);
-	button_container.appendChild(name);
-	button_container.appendChild(mint_to);
-	button_container.appendChild(view_draw);
-	button_container.appendChild(sell_land);
-	button_container.appendChild(sell_price);
+	let bid = document.createElement("button");
+	bid.id = "bid";
+	bid.innerHTML = "Bid";
+	bid.className = "button";
 
-	container.appendChild(accounts);
+	let bidprice = document.createElement("input");
+	bidprice.type = "text";
+	bidprice.id = "bid-price"
+	bidprice.placeholder = "Price"
+
+	let acc_bid = document.createElement("button");
+	acc_bid.id = "acc-bid";
+	acc_bid.innerHTML = "Accept Bid";
+	acc_bid.className = "button";
+
+	let bidno = document.createElement("input");
+	bidno.type = "text";
+	bidno.id = "bid-no"
+	bidno.placeholder = "Bid No."
+
+	button_container1.appendChild(save_land);
+	button_container1.appendChild(name);
+	button_container1.appendChild(mint_to);
+	button_container2.appendChild(view_draw);
+	button_container1.appendChild(sell_land);
+	button_container1.appendChild(sell_price);
+	button_container2.appendChild(bid);
+	button_container2.appendChild(bidprice);
+	button_container2.appendChild(acc_bid);
+	button_container2.appendChild(bidno);
+
+	account_cont.appendChild(accounts);
+	account_cont.appendChild(acc_bal);
+	container.appendChild(account_cont);
+	container.appendChild(button_container1);
 	container.appendChild(map);
-	container.appendChild(button_container);
+	container.appendChild(button_container2);
 
 	app.appendChild(container);
 	accounts.addEventListener("change", (e) => {
 		web3.eth.defaultAccount = e.target.value;
+		let bal = document.querySelector(".balance");
+		contract.methods.getBalance().call({
+			from: web3.eth.defaultAccount
+		}).then((e) => {
+			bal.innerHTML = e;
+		});
 	});
 	loadAddMapUI();
 }

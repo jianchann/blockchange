@@ -132,3 +132,20 @@
 	bottom: .5em;
 	left: .5em;
 }
+
+.balance {
+	margin: 0;
+	margin-left: 5px;
+	font-family: "Montserrat", sans-serif;
+}
+
+.gen {
+	width: 300px;
+	display: flex;
+	flex-direction: row;
+	justify-content: flex-start;
+}
+
+#acc-bid {
+	width: 150px;
+}
