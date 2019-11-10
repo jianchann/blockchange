@@ -1,8 +1,9 @@
 /*Web 3 Part
  ***************************
+ uuC2uImKjSwk_hUs6ciooZOjuXolBUHMvCa6tBQlJgQ
                             */
 
-var web3 = new Web3(new Web3.providers.WebsocketProvider('wss://k0hgjmdgbf:JqpK-H_0td3PwEsionKMZhYQV1yWwM4QuqbffIYg6BI@k0azo7vjl7-k0j5nu609n-wss.kr0-aws.kaleido.io'));
+var web3 = new Web3(new Web3.providers.WebsocketProvider('wss://k0bcyxppvu:uuC2uImKjSwk_hUs6ciooZOjuXolBUHMvCa6tBQlJgQ@k0azo7vjl7-k0j5nu609n-wss.kr0-aws.kaleido.io'));
 web3.eth.defaultAccount = '0x04f24283e3ec28456e99479126a2e2eb12546079';
 
 let abi = [
@@ -575,6 +576,10 @@ let accept_bid = async (id, bidNo) => {
 	});
 }
 
+/*ipfs
+	************************
+													*/
+//const node = window.Ipfs.create();
 
 /*Map openlayers
   ****************************
