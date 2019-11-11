@@ -590,13 +590,6 @@ const ipfs = window.IpfsHttpClient({
 	}
 });
 
-async function test() {
-	const data = JSON.stringify({
-		name: "Lol"
-	});
-
-	ipfs.add(data).then((e) => getState(e[0].hash));
-}
 function getState(hash) { //Implemented because ipfs.cat() is dysfunctional with kaleido
 	var client = new XMLHttpRequest();
 	client.open("GET", "https://k0azo7vjl7-k0o4rrkwqs-ipfs.kr0-aws.kaleido.io/api/v0/cat/" + hash, true);
@@ -606,8 +599,6 @@ function getState(hash) { //Implemented because ipfs.cat() is dysfunctional with
 	}
 	client.send();
 }
-
-test();
 
 /*Map openlayers
   ****************************
