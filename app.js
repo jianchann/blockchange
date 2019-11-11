@@ -579,7 +579,35 @@ let accept_bid = async (id, bidNo) => {
 /*ipfs
 	************************
 													*/
-//const node = window.Ipfs.create();
+//'https://k0bcyxppvu:uuC2uImKjSwk_hUs6ciooZOjuXolBUHMvCa6tBQlJgQ@k0azo7vjl7-k0o4rrkwqs-ipfs.kr0-aws.kaleido.io'
+
+const ipfs = window.IpfsHttpClient({
+	host: "k0azo7vjl7-k0o4rrkwqs-ipfs.kr0-aws.kaleido.io",
+	protocol: "https",
+	port: "",
+	headers: {
+		Authorization: "Basic " + btoa("k0bcyxppvu:uuC2uImKjSwk_hUs6ciooZOjuXolBUHMvCa6tBQlJgQ")
+	}
+});
+
+async function test() {
+	const data = JSON.stringify({
+		name: "Lol"
+	});
+
+	ipfs.add(data).then((e) => getState(e[0].hash));
+}
+function getState(hash) { //Implemented because ipfs.cat() is dysfunctional with kaleido
+	var client = new XMLHttpRequest();
+	client.open("GET", "https://k0azo7vjl7-k0o4rrkwqs-ipfs.kr0-aws.kaleido.io/api/v0/cat/" + hash, true);
+	client.setRequestHeader("Authorization", "Basic " + btoa("k0bcyxppvu:uuC2uImKjSwk_hUs6ciooZOjuXolBUHMvCa6tBQlJgQ"));
+	client.onload = function () {
+		console.log(this.response);
+	}
+	client.send();
+}
+
+test();
 
 /*Map openlayers
   ****************************
@@ -725,6 +753,7 @@ function loadMap(e, f) {
     if (btn.id == "feat") {
       let features = source.getFeatures();
       let new_state = geojson.writeFeatures(features);
+			ipfs.add(new_state).then((e) => {console.log(e); getState(e[0].hash);});
 			let addr = document.querySelector("#mint-addr").value;
 			let name = document.querySelector("#name").value;
 
