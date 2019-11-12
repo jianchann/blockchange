@@ -187,6 +187,24 @@ let abi = [
 			{
 				"name": "id",
 				"type": "uint256"
+			},
+			{
+				"name": "price",
+				"type": "uint256"
+			}
+		],
+		"name": "sellTag",
+		"outputs": [],
+		"payable": false,
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"constant": false,
+		"inputs": [
+			{
+				"name": "id",
+				"type": "uint256"
 			}
 		],
 		"name": "burnLand",
@@ -207,7 +225,7 @@ let abi = [
 				"type": "address"
 			},
 			{
-				"name": "new_state",
+				"name": "newStateHash",
 				"type": "string"
 			}
 		],
@@ -240,15 +258,11 @@ let abi = [
 		"constant": false,
 		"inputs": [
 			{
-				"name": "to",
-				"type": "address"
-			},
-			{
-				"name": "approved",
-				"type": "bool"
+				"name": "id",
+				"type": "uint256"
 			}
 		],
-		"name": "setApprovalForAll",
+		"name": "sellUntag",
 		"outputs": [],
 		"payable": false,
 		"stateMutability": "nonpayable",
@@ -258,15 +272,15 @@ let abi = [
 		"constant": false,
 		"inputs": [
 			{
-				"name": "id",
-				"type": "uint256"
+				"name": "to",
+				"type": "address"
 			},
 			{
-				"name": "price",
-				"type": "uint256"
+				"name": "approved",
+				"type": "bool"
 			}
 		],
-		"name": "sellStart",
+		"name": "setApprovalForAll",
 		"outputs": [],
 		"payable": false,
 		"stateMutability": "nonpayable",
@@ -285,6 +299,20 @@ let abi = [
 			{
 				"name": "",
 				"type": "bool"
+			}
+		],
+		"payable": false,
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"constant": true,
+		"inputs": [],
+		"name": "StateHash",
+		"outputs": [
+			{
+				"name": "",
+				"type": "string"
 			}
 		],
 		"payable": false,
@@ -319,20 +347,6 @@ let abi = [
 	},
 	{
 		"constant": true,
-		"inputs": [],
-		"name": "state",
-		"outputs": [
-			{
-				"name": "",
-				"type": "string"
-			}
-		],
-		"payable": false,
-		"stateMutability": "view",
-		"type": "function"
-	},
-	{
-		"constant": true,
 		"inputs": [
 			{
 				"name": "id",
@@ -352,20 +366,6 @@ let abi = [
 		],
 		"payable": false,
 		"stateMutability": "view",
-		"type": "function"
-	},
-	{
-		"constant": false,
-		"inputs": [
-			{
-				"name": "id",
-				"type": "uint256"
-			}
-		],
-		"name": "sellEnd",
-		"outputs": [],
-		"payable": false,
-		"stateMutability": "nonpayable",
 		"type": "function"
 	},
 	{
@@ -523,10 +523,10 @@ let abi = [
 
 var contract = new web3.eth.Contract(abi);
 
-contract.options.address = '0x9320724eb218224d4db01dd7ea5f962b7d1849d4';
+contract.options.address = '0x8ae065ae440215d21980f465fbdf0ff387e9bb46';
 
-let addplot = async (name, to, new_state) => {
-  let fCall = contract.methods.addLand(name, to, new_state);
+let addLand = async (name, to, newStateHash) => {
+  let fCall = contract.methods.addLand(name, to, newStateHash);
 
   fCall.estimateGas({
 		from: web3.eth.defaultAccount
@@ -591,14 +591,20 @@ const ipfs = window.IpfsHttpClient({
 });
 
 function getState(hash) { //Implemented because ipfs.cat() is dysfunctional with kaleido
-	var client = new XMLHttpRequest();
-	client.open("GET", "https://k0azo7vjl7-k0o4rrkwqs-ipfs.kr0-aws.kaleido.io/api/v0/cat/" + hash, true);
-	client.setRequestHeader("Authorization", "Basic " + btoa("k0bcyxppvu:uuC2uImKjSwk_hUs6ciooZOjuXolBUHMvCa6tBQlJgQ"));
-	client.onload = function () {
-		console.log(this.response);
-	}
-	client.send();
+	return new Promise((resolve, reject) => {
+		const client = new XMLHttpRequest();
+		client.open("GET", "https://k0azo7vjl7-k0o4rrkwqs-ipfs.kr0-aws.kaleido.io/api/v0/cat/" + hash, true);
+		client.setRequestHeader("Authorization", "Basic " + btoa("k0bcyxppvu:uuC2uImKjSwk_hUs6ciooZOjuXolBUHMvCa6tBQlJgQ"));
+		client.onload = function () {
+			resolve(this.response);
+		}
+		client.onerror = function () {
+			reject(this.statusText);
+		}
+		client.send();
+	});
 }
+
 
 /*Map openlayers
   ****************************
@@ -609,12 +615,12 @@ var clickedOwner = null;
 var total = 0;
 
 
-function loadMap(e, f) {
+function loadMap(g, f) {
 	total = parseInt(f, 10);
   var geojson = new ol.format.GeoJSON();
 	var feature;
-	if (e !== "") {
-  	feature = geojson.readFeatures(e);
+	if (g !== "") {
+  	feature = geojson.readFeatures(g);
 	} else {
 		feature = "";
 	}
@@ -669,7 +675,7 @@ function loadMap(e, f) {
     layers: [raster, vector],
     target: 'map',
     view: new ol.View({
-      center: ol.proj.fromLonLat([121.0332, 14.391057]),
+      center: ol.proj.fromLonLat([121.0332, 14.391057]), //UP [121.0685, 14.6538]
       zoom: 17
     })
   });
@@ -743,12 +749,12 @@ function loadMap(e, f) {
     let btn = event.target;
     if (btn.id == "feat") {
       let features = source.getFeatures();
-      let new_state = geojson.writeFeatures(features);
-			ipfs.add(new_state).then((e) => {console.log(e); getState(e[0].hash);});
-			let addr = document.querySelector("#mint-addr").value;
-			let name = document.querySelector("#name").value;
-
-      addplot(name, addr, new_state);
+      let newState = geojson.writeFeatures(features);
+			ipfs.add(newState).then((e) => {
+				let addr = document.querySelector("#mint-addr").value;
+				let name = document.querySelector("#name").value;
+	      addLand(name, addr, e[0].hash);
+			});
     }
     if (btn.id == "view-draw") {
       if (btn.innerHTML == "View") {
@@ -971,9 +977,15 @@ function loadLogin() {
 loadLogin();
 
 function loadAddMapUI() {
-	contract.methods.state().call().then((e) => {
+	contract.methods.StateHash().call().then((e) => {
 		contract.methods.landCount().call().then((f) => {
-			loadMap(e, f);
+			if (e == "") {
+				loadMap("", f);
+			} else {
+				getState(e).then((g) => {
+					loadMap(g, f);
+				});
+			}
 		});
 	});
 }
