@@ -56,6 +56,16 @@
       p.innerHTML = e;
       here.appendChild(p);
     })
+    contract.methods.changeString("Hello Pluto!").estimateGas({
+      from: web3.eth.defaultAccount
+    }).then((e) => {
+      contract.methods.changeString("Hello Pluto!").send({
+        from: web3.eth.defaultAccount,
+        gas: e
+      });
+    });
+
+
 
   </script>
 </body>
