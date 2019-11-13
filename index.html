@@ -1,20 +1,62 @@
 <!DOCTYPE html>
 <html>
-<meta name="viewport" content="width=device-width, initial-scale=1">
 <head>
-  <script src="https://cdn.rawgit.com/openlayers/openlayers.github.io/master/en/v6.1.1/build/ol.js"></script>
-  <link rel="stylesheet" href="https://cdn.rawgit.com/openlayers/openlayers.github.io/master/en/v6.1.1/css/ol.css">
+  <title>Hello World!</title>
   <script src="https://cdn.jsdelivr.net/gh/ethereum/web3.js@1.0.0-beta.34/dist/web3.js"></script>
-  <link href="https://fonts.googleapis.com/css?family=Montserrat|Oswald&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="style.css">
-  <!-- loading the minified version -->
-  <script src="https://cdn.jsdelivr.net/npm/ipfs/dist/index.js"></script>
-  <script src="https://unpkg.com/ipfs-http-client/dist/index.js"></script>
 </head>
 <body>
-  <div class="app">
+  <div class="here">
 
   </div>
-  <script src="app.js"></script>
+  <script>
+    var here = document.querySelector(".here");
+    var web3 = new Web3(new Web3.providers.WebsocketProvider('wss://k0bcyxppvu:uuC2uImKjSwk_hUs6ciooZOjuXolBUHMvCa6tBQlJgQ@k0azo7vjl7-k0j5nu609n-wss.kr0-aws.kaleido.io'));
+    web3.eth.defaultAccount = '0x04f24283e3ec28456e99479126a2e2eb12546079';
+    let abi = [
+  	{
+  		"constant": true,
+  		"inputs": [],
+  		"name": "hw",
+  		"outputs": [
+  			{
+  				"name": "",
+  				"type": "string"
+  			}
+  		],
+  		"payable": false,
+  		"stateMutability": "view",
+  		"type": "function"
+  	},
+  	{
+  		"constant": false,
+  		"inputs": [
+  			{
+  				"name": "str",
+  				"type": "string"
+  			}
+  		],
+  		"name": "changeString",
+  		"outputs": [],
+  		"payable": false,
+  		"stateMutability": "nonpayable",
+  		"type": "function"
+  	},
+  	{
+  		"inputs": [],
+  		"payable": false,
+  		"stateMutability": "nonpayable",
+  		"type": "constructor"
+  	}
+  ]
+    var contract = new web3.eth.Contract(abi);
+    contract.options.address = "0x4a8e750c74566ce93184e0a75cf30a79733d036c";
+
+    contract.methods.hw().call().then((e) => {
+      let p = document.createElement("p");
+      p.innerHTML = e;
+      here.appendChild(p);
+    })
+
+  </script>
 </body>
 </html>
