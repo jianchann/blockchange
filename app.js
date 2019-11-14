@@ -646,6 +646,11 @@ function loadMap(g, f) {
 
   /*var totalFeatures = source.getFeatures();
   var total = totalFeatures.length;*/
+  var contour = geojson.writeFeaturesObject(feature);
+
+  var rewindedPolygons = turf.rewind(contour);
+
+
 
   var vector = new ol.layer.Vector({
     source: source,
@@ -734,6 +739,20 @@ function loadMap(g, f) {
       source: source,
       type: 'Polygon'
     });
+
+
+    draw.on('drawstart', (event) => {
+    	window.addEventListener('click', () => {
+    		let drawn = geojson.writeFeatureObject(event.feature);
+    		if (rewindedPolygons.features.some(feat => {
+    			return geojson.readGeometry(drawn.geometry).intersectsExtent(geojson.readGeometry(feat.geometry).getExtent());
+    		})) {
+    			draw.removeLastPoint();
+    		}
+
+    	});
+    });
+
     draw.on('drawend', (event) => {
       total = total + 1;
       event.feature.setId(total);
