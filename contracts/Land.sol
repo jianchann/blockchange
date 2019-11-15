@@ -1,12 +1,11 @@
 pragma solidity 0.5.3;
 
-import "./ERC721.sol";
+import "./ERC721Enumerable.sol";
 
-contract Land is ERC721 {
+contract Land is ERC721Enumerable {
 
     struct LandPiece {
         uint id;
-        string name;
         uint price;
     }
 
@@ -21,6 +20,8 @@ contract Land is ERC721 {
     mapping (address => uint) withdrawable;
     mapping (uint => bool) sellable;
     mapping (uint => Bids) bids;
+    
+    mapping (address => string) userBid;
 
     address private owner;
     uint public landCount;
@@ -32,25 +33,25 @@ contract Land is ERC721 {
         StateHash = "";
     }
 
-    function addLand (string memory name, address to, string memory newStateHash) public {
-        require(owner == msg.sender, "Unauthorized.");
+    function addLand (address to, string memory newStateHash) public {
+        require(owner == msg.sender);
         ++landCount;
-        landpieces[landCount] = LandPiece(landCount, name, 0);
+        landpieces[landCount] = LandPiece(landCount, 0);
         _mint(to, landCount);
         StateHash = newStateHash;
     }
 
     function acceptBid(uint id, uint bidNo) public {
-        require(sellable[id], "Land is not for sale.");  /* Check if LandPiece is for sale */
-        require(bidNo != 0, "There are no bids available.");    /* Bids start with 1 */
-        require(bidNo <= bids[id].bidCount, "Bid does not exist.");    /* Bid exists for current selling iteration */
-        require(ownerOf(id) == msg.sender, "Unauthorized"); /* Check if account accepting the bid is the id owner */
+        require(sellable[id]);  /* Check if LandPiece is for sale */
+        require(bidNo != 0);    /* Bids start with 1 */
+        require(bidNo <= bids[id].bidCount);    /* Bid exists for current selling iteration */
+        require(ownerOf(id) == msg.sender); /* Check if account accepting the bid is the id owner */
 
         address landowner = ownerOf(id);
         address bidder = bids[id].bidders[bidNo];
         uint bidPrice = bids[id].bidPrices[bidNo];
 
-        require(withdrawable[bidder] >= bidPrice, "Bidder has no account balance.");
+        require(withdrawable[bidder] >= bidPrice);
 
         sellable[id] = false;
 
@@ -62,10 +63,10 @@ contract Land is ERC721 {
     }
 
     function viewBidPrice(uint id, uint bidNo) public view returns (uint) {
-        require(sellable[id], "Land is not for sale.");  /* Check if LandPiece is for sale */
-        require(bidNo != 0, "There are no bids available.");    /* Bids start with 1 */
-        require(bidNo <= bids[id].bidCount, "Bid does not exist.");    /* Bid exists for current selling iteration */
-        require(ownerOf(id) == msg.sender, "Unauthorized"); /* Check if account viewing the bid price is the id owner */
+        require(sellable[id]);
+        require(bidNo != 0);
+        require(bidNo <= bids[id].bidCount);
+        require(ownerOf(id) == msg.sender);
 
         uint price = bids[id].bidPrices[bidNo];
 
@@ -73,10 +74,10 @@ contract Land is ERC721 {
     }
 
     function viewBidCount(uint id, uint bidNo) public view returns (uint) {
-        require(sellable[id], "Land is not for sale.");  /* Check if LandPiece is for sale */
-        require(bidNo != 0, "There are no bids available.");    /* Bids start with 1 */
-        require(bidNo <= bids[id].bidCount, "Bid does not exist.");    /* Bid exists for current selling iteration */
-        require(ownerOf(id) == msg.sender, "Unauthorized."); /* Check if account viewing the bid count is the id owner */
+        require(sellable[id]);
+        require(bidNo != 0);
+        require(bidNo <= bids[id].bidCount);
+        require(ownerOf(id) == msg.sender);
 
         return bids[id].bidCount;
     }
@@ -86,10 +87,10 @@ contract Land is ERC721 {
         return (sellable[id]);
     }
 
-    function sellTag(uint id, uint price) public {
+    function sellStart(uint id, uint price) public {
         address landowner = ownerOf(id);
 
-        require(landowner == msg.sender, "Unauthorized.");
+        require(landowner == msg.sender);
 
         sellable[id] = true;
         landpieces[id].price = price;
@@ -98,10 +99,10 @@ contract Land is ERC721 {
         emit Approval(landowner, address(this), id);
     }
 
-    function sellUntag(uint id) public {
+    function sellEnd(uint id) public {
         address landowner = ownerOf(id);
 
-        require(landowner == msg.sender, "Unauthorized.");
+        require(landowner == msg.sender);
 
         sellable[id] = false;
         bids[id] = Bids(id, 0);
@@ -110,7 +111,7 @@ contract Land is ERC721 {
     }
 
     function getPrice(uint id) public view returns (uint) {
-        require(sellable[id], "Land is not for sale.");
+        require(sellable[id]);
 
         return landpieces[id].price;
     }
@@ -119,9 +120,8 @@ contract Land is ERC721 {
         address payable account = msg.sender;
         uint balance = withdrawable[account];
 
-        require(balance != 0, "No account balance.");
+        require(balance != 0);
 
-        withdrawable[account] -= balance;
         account.transfer(balance);
     }
 
@@ -130,12 +130,12 @@ contract Land is ERC721 {
     }
 
     function burnLand(uint id) public {
-        require(ownerOf(id) == msg.sender, "Unauthorized.");
+        require(ownerOf(id) == msg.sender);
         _burn(ownerOf(id), id);
     }
 
-    function bid(uint id) external payable {
-        require(sellable[id], "Land is not for sale.");
+    function bid(uint id, string calldata hash) external payable {
+        require(sellable[id]);
         address bidder = msg.sender;
         uint bidPrice = msg.value;
 
@@ -146,7 +146,14 @@ contract Land is ERC721 {
         bids[id].bidders[bidNo] = bidder;
         bids[id].bidPrices[bidNo] = bidPrice;
 
+        /* Store hash of bid in IPFS */
+        userBid[msg.sender] = hash;
+
         /* Store bid value to account */
         withdrawable[bidder] += bidPrice;
+    }
+    
+    function userBidHash() public view returns (string memory) {
+        return userBid[msg.sender];
     }
 }

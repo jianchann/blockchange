@@ -1,7 +1,4 @@
-/*Web 3 Part
- ***************************
- uuC2uImKjSwk_hUs6ciooZOjuXolBUHMvCa6tBQlJgQ
-                            */
+/* Web3 */
 
 var web3 = new Web3(new Web3.providers.WebsocketProvider('wss://k0bcyxppvu:uuC2uImKjSwk_hUs6ciooZOjuXolBUHMvCa6tBQlJgQ@k0azo7vjl7-k0j5nu609n-wss.kr0-aws.kaleido.io'));
 web3.eth.defaultAccount = '0x04f24283e3ec28456e99479126a2e2eb12546079';
@@ -71,6 +68,24 @@ let abi = [
 				"type": "address"
 			},
 			{
+				"name": "newStateHash",
+				"type": "string"
+			}
+		],
+		"name": "addLand",
+		"outputs": [],
+		"payable": false,
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"constant": false,
+		"inputs": [
+			{
+				"name": "to",
+				"type": "address"
+			},
+			{
 				"name": "tokenId",
 				"type": "uint256"
 			}
@@ -82,9 +97,41 @@ let abi = [
 		"type": "function"
 	},
 	{
+		"constant": false,
+		"inputs": [
+			{
+				"name": "id",
+				"type": "uint256"
+			},
+			{
+				"name": "hash",
+				"type": "string"
+			}
+		],
+		"name": "bid",
+		"outputs": [],
+		"payable": true,
+		"stateMutability": "payable",
+		"type": "function"
+	},
+	{
 		"constant": true,
 		"inputs": [],
 		"name": "getBalance",
+		"outputs": [
+			{
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"payable": false,
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"constant": true,
+		"inputs": [],
+		"name": "totalSupply",
 		"outputs": [
 			{
 				"name": "",
@@ -115,6 +162,29 @@ let abi = [
 		"outputs": [],
 		"payable": false,
 		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"constant": true,
+		"inputs": [
+			{
+				"name": "owner",
+				"type": "address"
+			},
+			{
+				"name": "index",
+				"type": "uint256"
+			}
+		],
+		"name": "tokenOfOwnerByIndex",
+		"outputs": [
+			{
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"payable": false,
+		"stateMutability": "view",
 		"type": "function"
 	},
 	{
@@ -149,17 +219,22 @@ let abi = [
 		"type": "function"
 	},
 	{
-		"constant": false,
+		"constant": true,
 		"inputs": [
 			{
-				"name": "id",
+				"name": "index",
 				"type": "uint256"
 			}
 		],
-		"name": "bid",
-		"outputs": [],
-		"payable": true,
-		"stateMutability": "payable",
+		"name": "tokenByIndex",
+		"outputs": [
+			{
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"payable": false,
+		"stateMutability": "view",
 		"type": "function"
 	},
 	{
@@ -187,49 +262,9 @@ let abi = [
 			{
 				"name": "id",
 				"type": "uint256"
-			},
-			{
-				"name": "price",
-				"type": "uint256"
-			}
-		],
-		"name": "sellTag",
-		"outputs": [],
-		"payable": false,
-		"stateMutability": "nonpayable",
-		"type": "function"
-	},
-	{
-		"constant": false,
-		"inputs": [
-			{
-				"name": "id",
-				"type": "uint256"
 			}
 		],
 		"name": "burnLand",
-		"outputs": [],
-		"payable": false,
-		"stateMutability": "nonpayable",
-		"type": "function"
-	},
-	{
-		"constant": false,
-		"inputs": [
-			{
-				"name": "name",
-				"type": "string"
-			},
-			{
-				"name": "to",
-				"type": "address"
-			},
-			{
-				"name": "newStateHash",
-				"type": "string"
-			}
-		],
-		"name": "addLand",
 		"outputs": [],
 		"payable": false,
 		"stateMutability": "nonpayable",
@@ -258,20 +293,6 @@ let abi = [
 		"constant": false,
 		"inputs": [
 			{
-				"name": "id",
-				"type": "uint256"
-			}
-		],
-		"name": "sellUntag",
-		"outputs": [],
-		"payable": false,
-		"stateMutability": "nonpayable",
-		"type": "function"
-	},
-	{
-		"constant": false,
-		"inputs": [
-			{
 				"name": "to",
 				"type": "address"
 			},
@@ -281,6 +302,24 @@ let abi = [
 			}
 		],
 		"name": "setApprovalForAll",
+		"outputs": [],
+		"payable": false,
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"constant": false,
+		"inputs": [
+			{
+				"name": "id",
+				"type": "uint256"
+			},
+			{
+				"name": "price",
+				"type": "uint256"
+			}
+		],
+		"name": "sellStart",
 		"outputs": [],
 		"payable": false,
 		"stateMutability": "nonpayable",
@@ -347,6 +386,20 @@ let abi = [
 	},
 	{
 		"constant": true,
+		"inputs": [],
+		"name": "userBidHash",
+		"outputs": [
+			{
+				"name": "",
+				"type": "string"
+			}
+		],
+		"payable": false,
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"constant": true,
 		"inputs": [
 			{
 				"name": "id",
@@ -366,6 +419,20 @@ let abi = [
 		],
 		"payable": false,
 		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"constant": false,
+		"inputs": [
+			{
+				"name": "id",
+				"type": "uint256"
+			}
+		],
+		"name": "sellEnd",
+		"outputs": [],
+		"payable": false,
+		"stateMutability": "nonpayable",
 		"type": "function"
 	},
 	{
@@ -523,10 +590,10 @@ let abi = [
 
 var contract = new web3.eth.Contract(abi);
 
-contract.options.address = '0x8ae065ae440215d21980f465fbdf0ff387e9bb46';
+contract.options.address = '0x61bd7811ca1b55c919003c350ac4048c213468f7';
 
-let addLand = async (name, to, newStateHash) => {
-  let fCall = contract.methods.addLand(name, to, newStateHash);
+let addLand = async (to, newStateHash) => {
+  let fCall = contract.methods.addLand(to, newStateHash);
 
   fCall.estimateGas({
 		from: web3.eth.defaultAccount
@@ -576,10 +643,9 @@ let accept_bid = async (id, bidNo) => {
 	});
 }
 
-/*ipfs
-	************************
-													*/
-//'https://k0bcyxppvu:uuC2uImKjSwk_hUs6ciooZOjuXolBUHMvCa6tBQlJgQ@k0azo7vjl7-k0o4rrkwqs-ipfs.kr0-aws.kaleido.io'
+/* IPFS */
+
+
 
 const ipfs = window.IpfsHttpClient({
 	host: "k0azo7vjl7-k0o4rrkwqs-ipfs.kr0-aws.kaleido.io",
@@ -590,7 +656,7 @@ const ipfs = window.IpfsHttpClient({
 	}
 });
 
-function getState(hash) { //Implemented because ipfs.cat() is dysfunctional with kaleido
+function getState(hash) {
 	return new Promise((resolve, reject) => {
 		const client = new XMLHttpRequest();
 		client.open("GET", "https://k0azo7vjl7-k0o4rrkwqs-ipfs.kr0-aws.kaleido.io/api/v0/cat/" + hash, true);
@@ -606,14 +672,23 @@ function getState(hash) { //Implemented because ipfs.cat() is dysfunctional with
 }
 
 
-/*Map openlayers
-  ****************************
-                              */
+/* UI */
 
+
+var app = document.querySelector('.app');
+var app_cont;
+var loggedIn = 0;
+var username = "";
+
+function clear() {
+	app.innerHTML = "";
+}
+	/* Openlayers */
 var clickedLand = 0;
 var clickedOwner = null;
 var total = 0;
 
+var map, draw, snap;
 
 function loadMap(g, f) {
 	total = parseInt(f, 10);
@@ -646,9 +721,6 @@ function loadMap(g, f) {
 
   /*var totalFeatures = source.getFeatures();
   var total = totalFeatures.length;*/
-  var contour = geojson.writeFeaturesObject(feature);
-
-  var rewindedPolygons = turf.rewind(contour);
 
 
 
@@ -676,7 +748,7 @@ function loadMap(g, f) {
     })
   });
 
-  var map = new ol.Map({
+  map = new ol.Map({
     layers: [raster, vector],
     target: 'map',
     view: new ol.View({
@@ -726,7 +798,6 @@ function loadMap(g, f) {
 		}
 	});
 
-  var draw, snap;
   var modify = new ol.interaction.Modify({
     condition: ol.events.condition.never,
     deleteCondition: ol.events.condition.never,
@@ -741,262 +812,388 @@ function loadMap(g, f) {
     });
 
 
-    draw.on('drawstart', (event) => {
-    	window.addEventListener('click', () => {
-    		let drawn = geojson.writeFeatureObject(event.feature);
-    		if (rewindedPolygons.features.some(feat => {
-    			return geojson.readGeometry(drawn.geometry).intersectsExtent(geojson.readGeometry(feat.geometry).getExtent());
-    		})) {
-    			draw.removeLastPoint();
-    		}
-
-    	});
-    });
 
     draw.on('drawend', (event) => {
       total = total + 1;
       event.feature.setId(total);
     });
 
-    map.addInteraction(draw);
     snap = new ol.interaction.Snap({source: source});
-    map.addInteraction(snap);
   }
 
   addInteractions();
-  window.addEventListener("click", (event) => {
-    let btn = event.target;
-    if (btn.id == "feat") {
-      let features = source.getFeatures();
-      let newState = geojson.writeFeatures(features);
-			ipfs.add(newState).then((e) => {
-				let addr = document.querySelector("#mint-addr").value;
-				let name = document.querySelector("#name").value;
-	      addLand(name, addr, e[0].hash);
-			});
-    }
-    if (btn.id == "view-draw") {
-      if (btn.innerHTML == "View") {
-        map.removeInteraction(draw);
-        map.removeInteraction(snap);
-        map.removeInteraction(modify);
-        btn.innerHTML = "Draw";
-      } else {
-        map.addInteraction(draw);
-        map.addInteraction(snap);
-        map.addInteraction(modify);
-        btn.innerHTML = "View";
-      }
-    }
-		if (btn.id == "sell") {
-			let price = parseInt(document.querySelector("#sell-price").value);
-			sellLand(clickedLand, price);
-		}
-		if (btn.id == "bid") {
-			let bidPrice = parseInt(document.querySelector("#bid-price").value);
-			bid(clickedLand, bidPrice);
-		}
-		if (btn.id == "acc-bid") {
-			let bidNo = parseInt(document.querySelector("#bid-no").value);
-			accept_bid(clickedLand, bidNo);
-		}
+
+  app_cont.addEventListener('click', (event) => {
+  	let tar = event.target;
+  	if (tar.id == 'add-btn') {
+  		console.log("Clicked");
+  		let features = source.getFeatures();
+		let newState = geojson.writeFeatures(features);
+		let addr = document.querySelector('#mint-address').value;
+		ipfs.add(newState).then(function (result) {
+			console.log(result);
+			addLand(addr, result[0].hash);
+		});
+  	}
   });
 }
 
-/* Web page generation */
 
-
-var app = document.querySelector(".app");
-
-var loggedIn = 0;
-
-function clearApp() {
-	app.innerHTML = "";
-}
-
+	/* End openlayers */
 function loadIndex() {
-	let container = document.createElement("div");
-	container.className = "container";
+	if (!(loggedIn)) {
+		loadLogin();
+		return;
+	}
+	/* Create and add header */
 
-	let accounts = document.createElement("select");
-	accounts.name = "accounts"
-	accounts.id = "accounts";
-	let owner = document.createElement("option");
-	owner.value = "0x04f24283e3ec28456e99479126a2e2eb12546079";
-	owner.innerHTML = "Owner";
-	let account1 = document.createElement("option");
-	account1.value = "0xc0d302b0ea07a5022dccd42e4dfe1a844a2e84a8"
-	account1.innerHTML = "Account1 (0xc0d)";
-	let account2 = document.createElement("option");
-	account2.value = "0x093d3cf86803432f557bfcdf8a2c26f939e64aaf"
-	account2.innerHTML = "Account2 (0x093)";
-	let account3 = document.createElement("option");
-	account3.value = "0x857de78d86081490e38ab8b518d10126cf488216"
-	account3.innerHTML = "Account3 (0x857)";
-	accounts.append(owner);
-	accounts.append(account1);
-	accounts.append(account2);
-	accounts.append(account3);
-	let account_cont = document.createElement("div");
-	account_cont.className = "gen";
-	let acc_bal = document.createElement("p");
-	acc_bal.className = "balance";
+	let header = document.createElement('div');
+	header.className = 'header2';
 
-	let button_container1 = document.createElement("div");
-	button_container1.className = "buttons";
+	let logo = document.createElement('button');
+	logo.className = 'logo-btn';
 
-	let map = document.createElement("div");
-	map.className = "map";
-	map.id = "map";
+	let name = document.createElement('p');
+	name.innerHTML = 'Soli';
+	name.className = 'name';
 
-	let button_container2 = document.createElement("div");
-	button_container2.className = "buttons";
+	let greet = document.createElement('p');
+	greet.className = 'greet';
+	greet.innerHTML = 'Hi ' + username + '!';
 
-	let save_land = document.createElement("button");
-	save_land.id = "feat";
-	save_land.innerHTML = "Add Land";
-	save_land.className = "button";
+	let home_btn = document.createElement('p');
+	home_btn.className = 'btn2';
+	home_btn.id = 'home';
+	home_btn.innerHTML = 'Home';
 
-	let name = document.createElement("input");
-	name.type = "text";
-	name.id = "name"
-	name.placeholder = "Name"
+	let supp_btn = document.createElement('p');
+	supp_btn.className = 'btn2';
+	supp_btn.id = 'support';
+	supp_btn.innerHTML = 'Support';
 
-	let mint_to = document.createElement("input");
-	mint_to.type = "text";
-	mint_to.id = "mint-addr"
-	mint_to.placeholder = "Address"
+	let acc_btn = document.createElement('p');
+	acc_btn.className = 'btn2';
+	acc_btn.id = 'account';
+	acc_btn.innerHTML = 'Account';
 
-	let view_draw = document.createElement("button");
-	view_draw.id = "view-draw";
-	view_draw.innerHTML = "View";
-	view_draw.className = "button";
+	let logout_btn = document.createElement('p');
+	logout_btn.className = 'btn2';
+	logout_btn.id = 'logout';
+	logout_btn.innerHTML = 'Logout';
 
-	let sell_land = document.createElement("button");
-	sell_land.id = "sell";
-	sell_land.innerHTML = "Sell Land";
-	sell_land.className = "button";
+	for (i = 1; i < 4; i++) {
+		let third = document.createElement('div');
+		third.className = 'third';
+		third.id = 'third' + i.toString() + '-2';
+		header.appendChild(third);
+	}
 
-	let sell_price = document.createElement("input");
-	sell_price.type = "text";
-	sell_price.id = "sell-price";
-	sell_price.placeholder = "Price";
+	app.appendChild(header);
 
-	let bid = document.createElement("button");
-	bid.id = "bid";
-	bid.innerHTML = "Bid";
-	bid.className = "button";
+	let third1 = document.querySelector('#third1-2');
+	let third2 = document.querySelector('#third2-2');
+	let third3 = document.querySelector('#third3-2');
 
-	let bidprice = document.createElement("input");
-	bidprice.type = "text";
-	bidprice.id = "bid-price"
-	bidprice.placeholder = "Price"
+	third1.appendChild(logo);
+	third1.appendChild(name);
+	third2.appendChild(greet);
+	third3.appendChild(home_btn);
+	third3.appendChild(supp_btn);
+	third3.appendChild(acc_btn);
+	third3.appendChild(logout_btn);
 
-	let acc_bid = document.createElement("button");
-	acc_bid.id = "acc-bid";
-	acc_bid.innerHTML = "Accept Bid";
-	acc_bid.className = "button";
+	/* Create and load main interface */
 
-	let bidno = document.createElement("input");
-	bidno.type = "text";
-	bidno.id = "bid-no"
-	bidno.placeholder = "Bid No."
+	app_cont = document.createElement('div');
+	app_cont.className = 'app-container';
+	app.appendChild(app_cont);
 
-	button_container1.appendChild(save_land);
-	button_container1.appendChild(name);
-	button_container1.appendChild(mint_to);
-	button_container2.appendChild(view_draw);
-	button_container1.appendChild(sell_land);
-	button_container1.appendChild(sell_price);
-	button_container2.appendChild(bid);
-	button_container2.appendChild(bidprice);
-	button_container2.appendChild(acc_bid);
-	button_container2.appendChild(bidno);
+	let twentyfive = document.createElement('div');
+	twentyfive.className = 'twentyfive';
 
-	account_cont.appendChild(accounts);
-	account_cont.appendChild(acc_bal);
-	container.appendChild(account_cont);
-	container.appendChild(button_container1);
-	container.appendChild(map);
-	container.appendChild(button_container2);
+	let seventyfive = document.createElement('div');
+	seventyfive.className = 'seventyfive';
 
-	app.appendChild(container);
-	accounts.addEventListener("change", (e) => {
-		web3.eth.defaultAccount = e.target.value;
-		let bal = document.querySelector(".balance");
-		contract.methods.getBalance().call({
-			from: web3.eth.defaultAccount
-		}).then((e) => {
-			bal.innerHTML = e;
-		});
+	/* Create and load user menu */
+
+
+	let add_drop = document.createElement('button');
+	add_drop.className = 'btn3';
+	add_drop.id = 'add-drp';
+	add_drop.append('Add Land');
+
+	let add_cont = document.createElement('div');
+	add_cont.id = 'add-cont';
+	add_cont.className = 'hidden';
+
+	let add_box = document.createElement('input');
+	add_box.className = 'text-box';
+	add_box.id = 'mint-address'
+	add_box.placeholder = 'Address';
+
+	let add_btn = document.createElement('button');
+	add_btn.className = 'btn4';
+	add_btn.id = 'add-btn';
+	add_btn.innerHTML = 'MINT';
+
+	add_cont.append(add_box);
+	add_cont.append(add_btn);
+
+
+
+	let myprop_btn = document.createElement('button');
+	myprop_btn.className = 'btn3';
+	myprop_btn.id = 'my-properties';
+	myprop_btn.append('My Properties');
+
+	let myprop = document.createElement('div');
+	myprop.className = 'properties';
+
+	contract.methods.balanceOf(web3.eth.defaultAccount).call().then((e) => {
+		for (i = 0; i < e; i++) {
+			contract.methods.tokenOfOwnerByIndex(i).call().then((f) => {
+				let property = document.createElement('div');
+				property.className = 'property';
+				property.id = f;
+				property.innerHTML = f;
+				myprop.appendChild(property);
+			});
+		}
 	});
-	loadAddMapUI();
-}
 
+	let myacc_btn = document.createElement('button');
+	myacc_btn.className = 'btn3';
+	myacc_btn.id = 'my-acc';
+	myacc_btn.append('My Account');
+
+	let myacc = document.createElement('div');
+	myacc.id = 'bal';
+	myacc.className = 'hidden';
+	myacc.innerHTML = 'Withdrawable balance: '
+
+	let wd_btn = document.createElement('button');
+	wd_btn.id = "withdraw";
+	wd_btn.className = 'btn4';
+	wd_btn.innerHTML = 'WITHDRAW';
+	var amount = 0;
+
+	contract.methods.getBalance().call().then((e) => {
+		amount = e;
+		myacc.append(amount);
+		myacc.appendChild(wd_btn);
+	});
+
+
+	if (username == 'Owner') {
+		twentyfive.appendChild(add_drop);
+		twentyfive.appendChild(add_cont);
+	}
+	twentyfive.appendChild(myprop_btn);
+	twentyfive.appendChild(myprop);
+	twentyfive.appendChild(myacc_btn);
+	twentyfive.appendChild(myacc);
+	
+
+	/* Create and load map */
+
+	let map = document.createElement('div');
+	map.className = 'map';
+	map.id = 'map';
+
+	app_cont.appendChild(twentyfive);
+	app_cont.appendChild(seventyfive);
+	seventyfive.appendChild(map);
+	loadAddMap();
+}
 
 function loadLogin() {
-	let windowclick = function (e) {
-		let clicked = e.target;
-		if (clicked.id == "login-submit") {
-			clearApp();
-			loadIndex();
-		}
+	let header = document.createElement('div');
+	header.className = 'header';
+
+	let logo = document.createElement('button');
+	logo.className = 'logo-btn';
+
+	let name = document.createElement('p');
+	name.innerHTML = 'Soli';
+	name.className = 'name';
+
+	let home_btn = document.createElement('p');
+	home_btn.className = 'btn1';
+	home_btn.id = 'home';
+	home_btn.innerHTML = 'Home';
+
+	let about_btn = document.createElement('p');
+	about_btn.className = 'btn1';
+	about_btn.id = 'about';
+	about_btn.innerHTML = 'About';
+
+	let reg_btn = document.createElement('p');
+	reg_btn.className = 'btn1';
+	reg_btn.id = 'register';
+	reg_btn.innerHTML = 'Register';
+
+	for (i = 1; i < 4; i++) {
+		let third = document.createElement('div');
+		third.className = 'third';
+		third.id = 'third' + i.toString();
+		header.appendChild(third);
 	}
-	let container = document.createElement("div");
-	container.className = "container";
 
-	let login_container = document.createElement("div");
-	login_container.className = "login-container";
+	app.appendChild(header);
 
-	let login_txt = document.createElement("p");
-	login_txt.className = "login-txt";
-	login_txt.innerHTML = "Login";
+	let third1 = document.querySelector('#third1');
+	let third2 = document.querySelector('#third2');
+	let third3 = document.querySelector('#third3');
 
-	let login_user = document.createElement("input");
-	login_user.className = "login-input";
-	login_user.id = "login-user";
-	login_user.type = "text";
-	login_user.placeholder = "Username";
+	third1.appendChild(logo);
+	third1.appendChild(name);
 
-	let login_pw = document.createElement("input");
-	login_pw.className = "login-input";
-	login_pw.id = "login-pw";
-	login_pw.type = "password";
-	login_pw.placeholder = "Password";
+	third2.appendChild(home_btn);
+	third2.appendChild(about_btn);
+	third2.appendChild(reg_btn);
 
-	let login_submit = document.createElement("button");
-	login_submit.className = "button";
-	login_submit.innerHTML = "Submit";
-	login_submit.id = "login-submit";
+	let landing = document.createElement('div');
+	landing.className = 'landing-container';
+	app.appendChild(landing);
 
-	let notice = document.createElement("div");
-	notice.className = "notice-container";
-	let login_notice = document.createElement("p");
-	login_notice.className = "register-notice";
-	login_notice.innerHTML = "You don't have an account yet? "
-	let reg = document.createElement("button");
-	reg.className = "register";
-	reg.innerHTML = "Register";
-	reg.id = "register";
-	notice.appendChild(login_notice);
-	notice.appendChild(reg);
+	for (i = 1; i < 3; i++) {
+		let fifty = document.createElement('div');
+		fifty.className = 'fifty';
+		fifty.id = 'fifty' + i.toString();
+		landing.append(fifty);
+	}
+	let fifty1 = document.querySelector('#fifty1');
+	let fifty2 = document.querySelector('#fifty2');
 
-	login_container.appendChild(login_txt);
-	login_container.appendChild(login_user);
-	login_container.appendChild(login_pw);
-	login_container.appendChild(login_submit);
-	login_container.appendChild(notice);
+	let landing_txt = document.createElement('p');
+	landing_txt.className = 'landing-txt';
+	landing_txt.innerHTML = 'Create an account and own land on the go.';
 
-	container.appendChild(login_container);
+	fifty1.appendChild(landing_txt);
 
-	app.appendChild(container);
-	window.addEventListener('click', windowclick);
+	let login = document.createElement('div');
+	login.className = 'login-container';
+
+	let login_txt = document.createElement('div');
+	login_txt.className = 'login-txt';
+	login_txt.innerHTML = 'Welcome!';
+
+	let user = document.createElement('input');
+	user.id = 'username';
+	user.type = 'text';
+	user.placeholder = 'Username';
+
+	let pass = document.createElement('input');
+	pass.id = 'password';
+	pass.type = 'password';
+	pass.placeholder = 'Password';
+
+	let submit = document.createElement('button');
+	submit.id = 'submit';
+	submit.className = 'submit-btn';
+	submit.innerHTML = 'Login';
+
+	let forgot_pw = document.createElement('p');
+	forgot_pw.id = 'forgot-pw';
+
+	let link = document.createElement('a');
+	link.className = 'link';
+	link.innerHTML = "Forgot your password?";
+	link.href = "#";
+
+	let new_here = document.createElement('p');
+	new_here.id = 'create-acc';
+	new_here.innerHTML = 'Not yet registered? ';
+
+	let link2 = document.createElement('a');
+	link2.className = 'link';
+	link2.innerHTML = "Create an account.";
+	link2.href = "#";
+
+	new_here.append(link2);
+
+	forgot_pw.appendChild(link);
+
+	login.appendChild(login_txt);
+	login.appendChild(user);
+	login.appendChild(pass);
+	login.appendChild(forgot_pw);
+	login.appendChild(submit);
+	login.appendChild(new_here);
+
+
+
+	fifty2.appendChild(login);
+
 }
 
-loadLogin();
 
-function loadAddMapUI() {
+loadIndex();
+
+
+window.addEventListener('click', (event) => {
+	let clicked = event.target;
+	if (clicked.id == 'submit') {
+		let u = document.querySelector('#username');
+		username = u.value;
+		loggedIn = 1;
+		if (username == 'Owner') {
+			web3.eth.defaultAccount = '0x04f24283e3ec28456e99479126a2e2eb12546079';
+		}
+		if (username == 'Account1') {
+			web3.eth.defaultAccount = '0xc0d302b0ea07a5022dccd42e4dfe1a844a2e84a8';
+		}
+		if (username == 'Account2') {
+			web3.eth.defaultAccount = '0x093d3cf86803432f557bfcdf8a2c26f939e64aaf';
+		}
+		if (username == 'Account3') {
+			web3.eth.defaultAccount = '0x857de78d86081490e38ab8b518d10126cf488216';
+		}
+		/* reload */
+		clear();
+		loadIndex();
+	}
+	if (clicked.id == 'logout') {
+		loggedIn = 0;
+		/* reload */
+		clear();
+		loadIndex();
+	}
+	if (clicked.id == 'add-drp') {
+		let cont = document.querySelector('#add-cont');
+		if (cont.style.display == 'none') {
+			cont.style.display = 'flex';
+			map.addInteraction(draw);
+			map.addInteraction(snap);
+		} else {
+			cont.style.display = 'none';
+			map.removeInteraction(draw);
+			map.removeInteraction(snap);
+		}
+	}
+	if (clicked.id == 'my-properties') {
+		let prop = document.querySelector('.properties');
+		if (prop.style.display == 'none') {
+			prop.style.display = 'flex';
+		} else {
+			prop.style.display = 'none';
+		}
+	}
+	if (clicked.id == 'my-acc') {
+		let acc = document.querySelector('#bal');
+		if (acc.style.display == 'none') {
+			acc.style.display = 'flex';
+		} else {
+			acc.style.display = 'none';
+		}
+	}
+
+	/* Handling web3 transactions */
+});
+
+function loadAddMap() {
 	contract.methods.StateHash().call().then((e) => {
+		console.log("Loaded hash " + e);
 		contract.methods.landCount().call().then((f) => {
 			if (e == "") {
 				loadMap("", f);
