@@ -20,7 +20,7 @@ contract Land is ERC721Enumerable {
     mapping (address => uint) withdrawable;
     mapping (uint => bool) sellable;
     mapping (uint => Bids) bids;
-    
+
     mapping (address => string) userBid;
 
     address private owner;
@@ -73,10 +73,8 @@ contract Land is ERC721Enumerable {
         return price;
     }
 
-    function viewBidCount(uint id, uint bidNo) public view returns (uint) {
+    function viewBidCount(uint id) public view returns (uint) {
         require(sellable[id]);
-        require(bidNo != 0);
-        require(bidNo <= bids[id].bidCount);
         require(ownerOf(id) == msg.sender);
 
         return bids[id].bidCount;
@@ -152,7 +150,7 @@ contract Land is ERC721Enumerable {
         /* Store bid value to account */
         withdrawable[bidder] += bidPrice;
     }
-    
+
     function userBidHash() public view returns (string memory) {
         return userBid[msg.sender];
     }

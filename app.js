@@ -1,6 +1,6 @@
 /* Web3 */
 
-var web3 = new Web3(new Web3.providers.WebsocketProvider('wss://k0bcyxppvu:uuC2uImKjSwk_hUs6ciooZOjuXolBUHMvCa6tBQlJgQ@k0azo7vjl7-k0j5nu609n-wss.kr0-aws.kaleido.io'));
+var web3 = new Web3(new Web3.providers.WebsocketProvider('wss://k0azo7vjl7-k0j5nu609n-wss.kr0-aws.kaleido.io'));
 web3.eth.defaultAccount = '0x04f24283e3ec28456e99479126a2e2eb12546079';
 
 let abi = [
@@ -617,6 +617,18 @@ let sellLand = async (id, price) => {
 	});
 }
 
+let unsellLand = async (id) => {
+	let fCall = contract.methods.sellEnd(id);
+	fCall.estimateGas({
+		from: web3.eth.defaultAccount
+	}).then((e) => {
+		fCall.send({
+			from: web3.eth.defaultAccount,
+			gas: e
+		});
+	});
+}
+
 let bid = async (id, value) => {
 	let fCall = contract.methods.bid(id);
 	fCall.estimateGas({
@@ -640,6 +652,16 @@ let accept_bid = async (id, bidNo) => {
 			from: web3.eth.defaultAccount,
 			gas: e,
 		});
+	});
+}
+
+let viewBids = (id) => {
+	contract.methods.viewBidCount(id).call().then((e) => {
+		for (i = 1; i <= e; i++) {
+			contract.methods.viewBidPrice(id, i).call().then((f) => {
+				/* display here */
+			});
+		}
 	});
 }
 
@@ -688,7 +710,7 @@ var clickedLand = 0;
 var clickedOwner = null;
 var total = 0;
 
-var map, draw, snap;
+var map, view, draw, snap;
 
 function loadMap(g, f) {
 	total = parseInt(f, 10);
@@ -748,13 +770,18 @@ function loadMap(g, f) {
     })
   });
 
+	view = new ol.View({
+		center: ol.proj.fromLonLat([121.0332, 14.391057]),
+		zoom: 17
+	});
+
   map = new ol.Map({
     layers: [raster, vector],
     target: 'map',
-    view: new ol.View({
+    view: view /*new ol.View({
       center: ol.proj.fromLonLat([121.0332, 14.391057]), //UP [121.0685, 14.6538]
       zoom: 17
-    })
+    })*/
   });
 
 
@@ -775,18 +802,7 @@ function loadMap(g, f) {
 				if (selected.getArray() !== undefined) {
 					if (selected.getArray()[0] !== undefined) {
 						if (selected.getArray()[0].getId() !== undefined) {
-							clickedLand = selected.getArray()[0].getId();
-							contract.methods.isSellable(clickedLand).call().then((e) => {
-								if (e) {
-									contract.methods.getPrice(clickedLand).call().then((f) => {
-										ol_id.innerHTML = "Land ID: " + clickedLand + " - Sale for " + f + " wei";
-										ol_cont.append(ol_id);
-									})
-								} else {
-									ol_id.innerHTML = "Land ID: " + clickedLand;
-									ol_cont.append(ol_id);
-								}
-							});
+							display(selected.getArray()[0].getId());
 						}
 					}
 				}
@@ -825,17 +841,55 @@ function loadMap(g, f) {
 
   app_cont.addEventListener('click', (event) => {
   	let tar = event.target;
+		if (tar.id == 'search-btn') {
+			let search_id = document.querySelector('#search-id').value;
+			if (source.getFeatureById(search_id) != null) {
+				locate(search_id);
+			}
+		}
   	if (tar.id == 'add-btn') {
-  		console.log("Clicked");
   		let features = source.getFeatures();
-		let newState = geojson.writeFeatures(features);
-		let addr = document.querySelector('#mint-address').value;
-		ipfs.add(newState).then(function (result) {
-			console.log(result);
-			addLand(addr, result[0].hash);
-		});
+			let newState = geojson.writeFeatures(features);
+			let addr = document.querySelector('#mint-address').value;
+			ipfs.add(newState).then(function (result) {
+				addLand(addr, result[0].hash);
+			});
   	}
+		if (tar.id == 'sell-land') {
+			let price = parseInt(document.querySelector('#sell-price').value, 10);
+			sellLand(clickedLand, price);
+		}
+		if (tar.id == 'unsell-land') {
+			unsellLand(clickedLand);
+		}
+		if (tar.className == 'property') {
+			locate(parseInt(tar.id, 10));
+		}
   });
+
+	function locate(id) {
+		let feature = source.getFeatureById(parseInt(id, 10));
+		let coordinates = feature.getGeometry().getExtent();
+		selectClick.getFeatures().clear();
+		selectClick.getFeatures().push(feature);
+		display(id);
+		view.animate({center: coordinates});
+	}
+
+	function display(id) {
+		clickedLand = parseInt(id, 10);
+		contract.methods.isSellable(clickedLand).call().then((e) => {
+			if (e) {
+				contract.methods.getPrice(clickedLand).call().then((f) => {
+					ol_id.innerHTML = "Land ID: " + clickedLand + " - Sale for " + f + " wei";
+					ol_cont.append(ol_id);
+				})
+			} else {
+				ol_id.innerHTML = "Land ID: " + clickedLand;
+				ol_cont.append(ol_id);
+			}
+		});
+	}
 }
 
 
@@ -916,6 +970,27 @@ function loadIndex() {
 
 	/* Create and load user menu */
 
+	let search_land = document.createElement('button');
+	search_land.className = 'btn3';
+	search_land.id = 'search';
+	search_land.append('Search');
+
+	let search_cont = document.createElement('div');
+	search_cont.id = 'search-cont';
+	search_cont.className = 'hidden';
+
+	let search_box = document.createElement('input');
+	search_box.className = 'text-box';
+	search_box.id = 'search-id';
+	search_box.placeholder = 'Land ID';
+
+	let search_btn = document.createElement('button');
+	search_btn.className = 'btn4';
+	search_btn.id = 'search-btn';
+	search_btn.innerHTML = 'SEARCH';
+
+	search_cont.append(search_box);
+	search_cont.append(search_btn);
 
 	let add_drop = document.createElement('button');
 	add_drop.className = 'btn3';
@@ -951,7 +1026,7 @@ function loadIndex() {
 
 	contract.methods.balanceOf(web3.eth.defaultAccount).call().then((e) => {
 		for (i = 0; i < e; i++) {
-			contract.methods.tokenOfOwnerByIndex(i).call().then((f) => {
+			contract.methods.tokenOfOwnerByIndex(web3.eth.defaultAccount, i).call().then((f) => {
 				let property = document.createElement('div');
 				property.className = 'property';
 				property.id = f;
@@ -983,7 +1058,54 @@ function loadIndex() {
 		myacc.appendChild(wd_btn);
 	});
 
+	let sell_btn = document.createElement('button');
+	sell_btn.className = 'btn3';
+	sell_btn.id = 'sell';
+	sell_btn.append('Sell Land');
 
+	let sell_cont = document.createElement('div');
+	sell_cont.className = 'hidden';
+	sell_cont.id = 'sell-cont';
+
+	/*let sell_box = document.createElement('input');
+	sell_box.className = 'text-box';
+	sell_box.id = 'sell-price';
+	sell_box.placeholder = 'Price';
+
+	let sell_land = document.createElement('button');
+	sell_land.id = "sell-land";
+	sell_land.className = 'btn4';
+	sell_land.innerHTML = 'SELL';
+
+	let unsell_land = document.createElement('button');
+	unsell_land.id = "unsell-land";
+	unsell_land.className = 'btn4';
+	unsell_land.innerHTML = 'CANCEL';*/
+
+	let bid_btn = document.createElement('button');
+	bid_btn.className = 'btn3';
+	bid_btn.id = 'bid-btn';
+	bid_btn.append('Bid');
+
+	let bid_cont = document.createElement('div');
+	bid_cont.className = 'hidden';
+	bid_cont.id = 'bid-cont';
+
+	let bid_box = document.createElement('input');
+	bid_box.className = 'text-box';
+	bid_box.id = 'bid-price';
+	bid_box.placeholder = 'Value';
+
+	let bid_land = document.createElement('button');
+	bid_land.id = "bid";
+	bid_land.className = 'btn4';
+	bid_land.innerHTML = 'BID';
+
+	bid_cont.appendChild(bid_box);
+	bid_cont.appendChild(bid_land);
+
+	twentyfive.appendChild(search_land);
+	twentyfive.appendChild(search_cont);
 	if (username == 'Owner') {
 		twentyfive.appendChild(add_drop);
 		twentyfive.appendChild(add_cont);
@@ -992,7 +1114,11 @@ function loadIndex() {
 	twentyfive.appendChild(myprop);
 	twentyfive.appendChild(myacc_btn);
 	twentyfive.appendChild(myacc);
-	
+	twentyfive.appendChild(sell_btn);
+	twentyfive.appendChild(sell_cont);
+	twentyfive.appendChild(bid_btn);
+	twentyfive.appendChild(bid_cont);
+
 
 	/* Create and load map */
 
@@ -1130,9 +1256,16 @@ function loadLogin() {
 
 loadIndex();
 
-
 window.addEventListener('click', (event) => {
 	let clicked = event.target;
+	if (clicked.classList.contains('btn3')) {
+		/*if (clicked.classList.contains('btn3-active')) {
+			clicked.classList.remove('btn3-active');
+		} else {
+			clicked.classList.add('btn3-active');
+		}*/
+		clicked.classList.toggle('btn3-active');
+	}
 	if (clicked.id == 'submit') {
 		let u = document.querySelector('#username');
 		username = u.value;
@@ -1159,9 +1292,19 @@ window.addEventListener('click', (event) => {
 		clear();
 		loadIndex();
 	}
+	if (clicked.id == 'search') {
+		let cont = document.querySelector('#search-cont');
+		let display = window.getComputedStyle(cont, null).display;
+		if (display == 'none') {
+			cont.style.display = 'flex';
+		} else {
+			cont.style.display = 'none';
+		}
+	}
 	if (clicked.id == 'add-drp') {
 		let cont = document.querySelector('#add-cont');
-		if (cont.style.display == 'none') {
+		let display = window.getComputedStyle(cont, null).display;
+		if (display == 'none') {
 			cont.style.display = 'flex';
 			map.addInteraction(draw);
 			map.addInteraction(snap);
@@ -1173,7 +1316,8 @@ window.addEventListener('click', (event) => {
 	}
 	if (clicked.id == 'my-properties') {
 		let prop = document.querySelector('.properties');
-		if (prop.style.display == 'none') {
+		let display = window.getComputedStyle(prop, null).display;
+		if (display == 'none') {
 			prop.style.display = 'flex';
 		} else {
 			prop.style.display = 'none';
@@ -1181,10 +1325,62 @@ window.addEventListener('click', (event) => {
 	}
 	if (clicked.id == 'my-acc') {
 		let acc = document.querySelector('#bal');
-		if (acc.style.display == 'none') {
+		let display = window.getComputedStyle(acc, null).display;
+		if (display == 'none') {
 			acc.style.display = 'flex';
 		} else {
 			acc.style.display = 'none';
+		}
+	}
+	if (clicked.id == 'sell') {
+		let cont = document.querySelector('#sell-cont');
+		let display = window.getComputedStyle(cont, null).display;
+		if (display == 'none') {
+			cont.style.display = 'flex';
+			if (clickedLand != 0) {
+				contract.methods.ownerOf(clickedLand).call().then((e) => {
+					contract.methods.isSellable(clickedLand).call().then((f) => {
+						if (e == web3.eth.defaultAccount) {
+							if (f) {
+								cont.append('Currently for sale.');
+								let unsell_land = document.createElement('button');
+								unsell_land.id = "unsell-land";
+								unsell_land.className = 'btn4';
+								unsell_land.innerHTML = 'CANCEL'
+								cont.appendChild(unsell_land);
+							} else {
+								let sell_box = document.createElement('input');
+								sell_box.className = 'text-box';
+								sell_box.id = 'sell-price';
+								sell_box.placeholder = 'Price';
+
+								let sell_land = document.createElement('button');
+								sell_land.id = "sell-land";
+								sell_land.className = 'btn4';
+								sell_land.innerHTML = 'SELL';
+								cont.appendChild(sell_box);
+								cont.appendChild(sell_land);
+							}
+						} else {
+							cont.append('You are not the owner of this land.');
+						}
+					});
+				});
+			} else {
+				cont.style.display = 'none';
+			}
+		} else {
+			cont.innerHTML = "";
+			cont.style.display = 'none';
+		}
+	}
+	if (clicked.id == 'bid-btn') {
+		let cont = document.querySelector('#bid-cont');
+		let display = window.getComputedStyle(cont, null).display;
+		if (display == 'none') {
+			cont.style.display = 'flex';
+		} else {
+			cont.style.display = 'none';
 		}
 	}
 
