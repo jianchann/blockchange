@@ -1,6 +1,6 @@
 /* Web3 */
 
-var web3 = new Web3(new Web3.providers.WebsocketProvider('wss://k0azo7vjl7-k0j5nu609n-wss.kr0-aws.kaleido.io'));
+var web3 = new Web3(new Web3.providers.WebsocketProvider('wss://k0bcyxppvu:uuC2uImKjSwk_hUs6ciooZOjuXolBUHMvCa6tBQlJgQ@k0azo7vjl7-k0j5nu609n-wss.kr0-aws.kaleido.io'));
 web3.eth.defaultAccount = '0x04f24283e3ec28456e99479126a2e2eb12546079';
 
 let abi = [
@@ -590,7 +590,7 @@ let abi = [
 
 var contract = new web3.eth.Contract(abi);
 
-contract.options.address = '0x61bd7811ca1b55c919003c350ac4048c213468f7';
+contract.options.address = '0x9ea588c47532652be22df2c2e5e7eb4cc607fefb';
 
 let addLand = async (to, newStateHash) => {
   let fCall = contract.methods.addLand(to, newStateHash);
@@ -629,8 +629,8 @@ let unsellLand = async (id) => {
 	});
 }
 
-let bid = async (id, value) => {
-	let fCall = contract.methods.bid(id);
+let bidLand = async (id, hash, value) => {
+	let fCall = contract.methods.bid(id, hash);
 	fCall.estimateGas({
 		from: web3.eth.defaultAccount,
 		value: value
@@ -656,14 +656,32 @@ let accept_bid = async (id, bidNo) => {
 }
 
 let viewBids = (id) => {
-	contract.methods.viewBidCount(id).call().then((e) => {
+	contract.methods.viewBidCount(id).call({
+		from: web3.eth.defaultAccount
+	}).then((e) => {
 		for (i = 1; i <= e; i++) {
-			contract.methods.viewBidPrice(id, i).call().then((f) => {
+			contract.methods.viewBidPrice(id, i).call({
+				from: web3.eth.defaultAccount
+			}).then((f) => {
 				/* display here */
 			});
 		}
 	});
 }
+
+let Bid = function (id, value, status) {
+	this.id = id;
+	this.value = value;
+	this.status = status;
+}
+
+/*let userbids = [];
+userbids.push(new Bid(1, "ongoing"));
+userbids.push(new Bid(2, "ongoing"));
+userbids.push(new Bid(3, "accepted"));
+console.log(userbids);
+console.log(JSON.stringify(userbids));
+console.log(JSON.parse(JSON.stringify(userbids)));*/
 
 /* IPFS */
 
@@ -678,7 +696,7 @@ const ipfs = window.IpfsHttpClient({
 	}
 });
 
-function getState(hash) {
+function getData(hash) {
 	return new Promise((resolve, reject) => {
 		const client = new XMLHttpRequest();
 		client.open("GET", "https://k0azo7vjl7-k0o4rrkwqs-ipfs.kr0-aws.kaleido.io/api/v0/cat/" + hash, true);
@@ -709,6 +727,7 @@ function clear() {
 var clickedLand = 0;
 var clickedOwner = null;
 var total = 0;
+var user_bids = [];
 
 var map, view, draw, snap;
 
@@ -841,6 +860,7 @@ function loadMap(g, f) {
 
   app_cont.addEventListener('click', (event) => {
   	let tar = event.target;
+		console.log(tar.parentNode);
 		if (tar.id == 'search-btn') {
 			let search_id = document.querySelector('#search-id').value;
 			if (source.getFeatureById(search_id) != null) {
@@ -862,8 +882,18 @@ function loadMap(g, f) {
 		if (tar.id == 'unsell-land') {
 			unsellLand(clickedLand);
 		}
+		if (tar.id == 'bid') {
+			let value = parseInt(document.querySelector('#bid-price').value, 10);
+			user_bids.push(new Bid(clickedLand, value, "Ongoing"));
+			ipfs.add(JSON.stringify(user_bids)).then((e) => {
+				bidLand(clickedLand, e[0].hash, value);
+			});
+		}
 		if (tar.className == 'property') {
 			locate(parseInt(tar.id, 10));
+		}
+		if (tar.parentNode.className == 'user-bid') {
+			locate(parseInt(((tar.parentNode.querySelector('.user-bid-id')).innerHTML), 10));
 		}
   });
 
@@ -1091,18 +1121,6 @@ function loadIndex() {
 	bid_cont.className = 'hidden';
 	bid_cont.id = 'bid-cont';
 
-	let bid_box = document.createElement('input');
-	bid_box.className = 'text-box';
-	bid_box.id = 'bid-price';
-	bid_box.placeholder = 'Value';
-
-	let bid_land = document.createElement('button');
-	bid_land.id = "bid";
-	bid_land.className = 'btn4';
-	bid_land.innerHTML = 'BID';
-
-	bid_cont.appendChild(bid_box);
-	bid_cont.appendChild(bid_land);
 
 	twentyfive.appendChild(search_land);
 	twentyfive.appendChild(search_cont);
@@ -1256,6 +1274,14 @@ function loadLogin() {
 
 loadIndex();
 
+function updateUserBid(i) {
+	contract.methods.ownerOf(i).call().then((e) => {
+		if (web3.eth.defaultAccount == e) {
+			user_bids[i].status = "Won";
+		}
+	});
+}
+
 window.addEventListener('click', (event) => {
 	let clicked = event.target;
 	if (clicked.classList.contains('btn3')) {
@@ -1288,6 +1314,8 @@ window.addEventListener('click', (event) => {
 	}
 	if (clicked.id == 'logout') {
 		loggedIn = 0;
+		clickedLand = 0;
+		user_bids = [];
 		/* reload */
 		clear();
 		loadIndex();
@@ -1378,8 +1406,61 @@ window.addEventListener('click', (event) => {
 		let cont = document.querySelector('#bid-cont');
 		let display = window.getComputedStyle(cont, null).display;
 		if (display == 'none') {
+
+			let bid_box = document.createElement('input');
+			bid_box.className = 'text-box';
+			bid_box.id = 'bid-price';
+			bid_box.placeholder = 'Value';
+
+			let bid_land = document.createElement('button');
+			bid_land.id = "bid";
+			bid_land.className = 'btn4';
+			bid_land.innerHTML = 'BID';
+
+			cont.appendChild(bid_box);
+			cont.appendChild(bid_land);
+			cont.append("My Bids");
+			contract.methods.userBidHash().call({
+				from: web3.eth.defaultAccount
+			}).then((e) => {
+				if (e != "") {
+					getData(e).then((f) => {
+						user_bids = JSON.parse(f);
+						for (i = 0; i < user_bids.length; i++) {
+							updateUserBid(i);
+
+							let user_bid = document.createElement('div');
+							user_bid.className = 'user-bid';
+
+							let user_bid_id = document.createElement('div');
+							user_bid_id.className = 'user-bid-id';
+
+							let user_bid_price = document.createElement('div');
+							user_bid_price.className = 'user-bid-price';
+
+							let user_bid_status = document.createElement('div');
+							user_bid_status.className = 'user-bid-status';
+
+							user_bid_id.innerHTML = (user_bids[i].id).toString();
+							user_bid_price.innerHTML = (user_bids[i].value).toString();
+							user_bid_status.innerHTML = user_bids[i].status;
+
+							user_bid.appendChild(user_bid_id);
+							user_bid.appendChild(user_bid_price);
+							user_bid.appendChild(user_bid_status);
+							cont.append(user_bid);
+						}
+					});
+				} else {
+					let notice = document.createElement('p');
+					notice.className = 'notice';
+					notice.innerHTML = "No bids yet.";
+					cont.append(notice);
+				}
+			});
 			cont.style.display = 'flex';
 		} else {
+			cont.innerHTML = "";
 			cont.style.display = 'none';
 		}
 	}
@@ -1388,13 +1469,16 @@ window.addEventListener('click', (event) => {
 });
 
 function loadAddMap() {
-	contract.methods.StateHash().call().then((e) => {
-		console.log("Loaded hash " + e);
-		contract.methods.landCount().call().then((f) => {
+	contract.methods.StateHash().call({
+		from: web3.eth.defaultAccount
+	}).then((e) => {
+		contract.methods.landCount().call({
+			from: web3.eth.defaultAccount
+		}).then((f) => {
 			if (e == "") {
 				loadMap("", f);
 			} else {
-				getState(e).then((g) => {
+				getData(e).then((g) => {
 					loadMap(g, f);
 				});
 			}

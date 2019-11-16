@@ -380,6 +380,7 @@ body {
 
 	margin: 10px;
 	cursor: pointer;
+  transition: 0.3s;
 }
 
 .btn4:hover {
@@ -412,13 +413,14 @@ body {
 	margin: 6px;
 	color: white;
 	font-family: 'Bebas Neue', cursive;
-	border: solid 1px #ccc;
+	border: solid 1px white;
 	border-radius: 10px;
 
 	display: flex;
 	justify-content: center;
 
 	cursor: pointer;
+  transition: 0.3s;
 }
 
 .property:hover {
@@ -449,4 +451,65 @@ body {
 	color: white;
 	font-family: 'Raleway', sans-serif;
 	font-size: 16px;
+}
+#bid-cont {
+	text-align: center;
+	padding: 8px;
+	color: white;
+	font-family: 'Raleway', sans-serif;
+	font-size: 16px;
+}
+
+
+.user-bid {
+	width: 90%;
+	margin: 6px;
+	color: white;
+	font-family: 'Bebas Neue', cursive;
+	border: solid 1px white;
+	border-radius: 10px;
+
+	display: flex;
+	justify-content: center;
+
+	cursor: pointer;
+  transition: 0.3s;
+}
+
+.user-bid:hover {
+  box-shadow: 0px 0px 10px 2px rgba(0,0,0,0.75);
+}
+
+.user-bid-id {
+  margin: 0;
+  padding: 0;
+  display: flex;
+  justify-content: center;
+  border: none;
+  border-right: solid 1px white;
+  width: 15%;
+}
+
+.user-bid-price {
+  margin: 0;
+  padding: 0;
+  display: flex;
+  justify-content: center;
+  border: none;
+  border-right: solid 1px white;
+  width: 20%;
+}
+
+.user-bid-status {
+  margin: 0;
+  padding: 0;
+  display: flex;
+  justify-content: center;
+  border: none;
+  width: 65%;
+}
+
+.notice {
+  color: #ccc;
+  font-size: 12px;
 }

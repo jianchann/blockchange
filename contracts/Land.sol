@@ -132,7 +132,7 @@ contract Land is ERC721Enumerable {
         _burn(ownerOf(id), id);
     }
 
-    function bid(uint id, string calldata hash) external payable {
+    function bid(uint id, string memory hash) public payable {
         require(sellable[id]);
         address bidder = msg.sender;
         uint bidPrice = msg.value;
