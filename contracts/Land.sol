@@ -9,6 +9,7 @@ contract Land is ERC721Enumerable {
     struct LandPiece {
         uint id;
         uint price;
+        string deedHash;
     }
 
     struct Bids {
@@ -37,10 +38,10 @@ contract Land is ERC721Enumerable {
         StateHash = "";
     }
 
-    function addLand (address to, string memory newStateHash) public {
+    function addLand (address to, string memory deedHash, string memory newStateHash) public {
         require(owner == msg.sender);
         ++landCount;
-        landpieces[landCount] = LandPiece(landCount, 0);
+        landpieces[landCount] = LandPiece(landCount, 0, deedHash);
         _mint(to, landCount);
         StateHash = newStateHash;
     }
@@ -165,5 +166,9 @@ contract Land is ERC721Enumerable {
 
     function userBidHash() public view returns (string memory) {
         return userBid[msg.sender];
+    }
+
+    function getDeedHash(uint id) public view returns (string memory) {
+        return landpieces[id].deedHash;
     }
 }
