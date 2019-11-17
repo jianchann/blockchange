@@ -25,7 +25,7 @@
       let upload_hash = JSON.parse(this.response).Hash;
       console.log(JSON.parse(this.response).Hash);
       let item = document.createElement("img");
-      item.src = "https://k0azo7vjl7-k0o4rrkwqs-ipfs.kr0-aws.kaleido.io/ipfs/" + upload_hash;
+      item.src = "https://k0azo7vjl7-k0o4rrkwqs-ipfs.kr0-aws.kaleido.io/ipfs/QmXKgGTzkgusCf2eCoKbaSRyBTUhVc9afcZFFrcRxXsTiZ" + upload_hash;
       document.body.appendChild(item);
     }
     http.send(JSON.stringify({

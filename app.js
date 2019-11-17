@@ -1,596 +1,613 @@
 /* Web3 */
+const KALEIDO_WSS = 'wss://k0bcyxppvu:uuC2uImKjSwk_hUs6ciooZOjuXolBUHMvCa6tBQlJgQ@k0azo7vjl7-k0j5nu609n-wss.kr0-aws.kaleido.io';
+var provider = new Web3.providers.WebsocketProvider(KALEIDO_WSS);
+var web3 = new Web3(provider);
 
-var web3 = new Web3(new Web3.providers.WebsocketProvider('wss://k0bcyxppvu:uuC2uImKjSwk_hUs6ciooZOjuXolBUHMvCa6tBQlJgQ@k0azo7vjl7-k0j5nu609n-wss.kr0-aws.kaleido.io'));
+provider.on('error', e => console.log('WS Error', e));
+provider.on('end', e => {
+    console.log('WS closed');
+    console.log('Attempting to reconnect...');
+    provider = new Web3.providers.WebsocketProvider(KALEIDO_WSS);
+
+    provider.on('connect', function () {
+        console.log('WSS Reconnected');
+    });
+
+    web3.setProvider(provider);
+});
+
 web3.eth.defaultAccount = '0x04f24283e3ec28456e99479126a2e2eb12546079';
 
+setInterval(refresh , 45000);
+
+function refresh() {
+	web3.eth.net.getId();
+}
+
 let abi = [
-	{
-		"constant": true,
-		"inputs": [
-			{
-				"name": "interfaceId",
-				"type": "bytes4"
-			}
-		],
-		"name": "supportsInterface",
-		"outputs": [
-			{
-				"name": "",
-				"type": "bool"
-			}
-		],
-		"payable": false,
-		"stateMutability": "view",
-		"type": "function"
-	},
-	{
-		"constant": false,
-		"inputs": [
-			{
-				"name": "id",
-				"type": "uint256"
-			},
-			{
-				"name": "bidNo",
-				"type": "uint256"
-			}
-		],
-		"name": "acceptBid",
-		"outputs": [],
-		"payable": false,
-		"stateMutability": "nonpayable",
-		"type": "function"
-	},
-	{
-		"constant": true,
-		"inputs": [
-			{
-				"name": "tokenId",
-				"type": "uint256"
-			}
-		],
-		"name": "getApproved",
-		"outputs": [
-			{
-				"name": "",
-				"type": "address"
-			}
-		],
-		"payable": false,
-		"stateMutability": "view",
-		"type": "function"
-	},
-	{
-		"constant": false,
-		"inputs": [
-			{
-				"name": "to",
-				"type": "address"
-			},
-			{
-				"name": "newStateHash",
-				"type": "string"
-			}
-		],
-		"name": "addLand",
-		"outputs": [],
-		"payable": false,
-		"stateMutability": "nonpayable",
-		"type": "function"
-	},
-	{
-		"constant": false,
-		"inputs": [
-			{
-				"name": "to",
-				"type": "address"
-			},
-			{
-				"name": "tokenId",
-				"type": "uint256"
-			}
-		],
-		"name": "approve",
-		"outputs": [],
-		"payable": false,
-		"stateMutability": "nonpayable",
-		"type": "function"
-	},
-	{
-		"constant": false,
-		"inputs": [
-			{
-				"name": "id",
-				"type": "uint256"
-			},
-			{
-				"name": "hash",
-				"type": "string"
-			}
-		],
-		"name": "bid",
-		"outputs": [],
-		"payable": true,
-		"stateMutability": "payable",
-		"type": "function"
-	},
-	{
-		"constant": true,
-		"inputs": [],
-		"name": "getBalance",
-		"outputs": [
-			{
-				"name": "",
-				"type": "uint256"
-			}
-		],
-		"payable": false,
-		"stateMutability": "view",
-		"type": "function"
-	},
-	{
-		"constant": true,
-		"inputs": [],
-		"name": "totalSupply",
-		"outputs": [
-			{
-				"name": "",
-				"type": "uint256"
-			}
-		],
-		"payable": false,
-		"stateMutability": "view",
-		"type": "function"
-	},
-	{
-		"constant": false,
-		"inputs": [
-			{
-				"name": "from",
-				"type": "address"
-			},
-			{
-				"name": "to",
-				"type": "address"
-			},
-			{
-				"name": "tokenId",
-				"type": "uint256"
-			}
-		],
-		"name": "transferFrom",
-		"outputs": [],
-		"payable": false,
-		"stateMutability": "nonpayable",
-		"type": "function"
-	},
-	{
-		"constant": true,
-		"inputs": [
-			{
-				"name": "owner",
-				"type": "address"
-			},
-			{
-				"name": "index",
-				"type": "uint256"
-			}
-		],
-		"name": "tokenOfOwnerByIndex",
-		"outputs": [
-			{
-				"name": "",
-				"type": "uint256"
-			}
-		],
-		"payable": false,
-		"stateMutability": "view",
-		"type": "function"
-	},
-	{
-		"constant": false,
-		"inputs": [],
-		"name": "withdraw",
-		"outputs": [],
-		"payable": false,
-		"stateMutability": "nonpayable",
-		"type": "function"
-	},
-	{
-		"constant": false,
-		"inputs": [
-			{
-				"name": "from",
-				"type": "address"
-			},
-			{
-				"name": "to",
-				"type": "address"
-			},
-			{
-				"name": "tokenId",
-				"type": "uint256"
-			}
-		],
-		"name": "safeTransferFrom",
-		"outputs": [],
-		"payable": false,
-		"stateMutability": "nonpayable",
-		"type": "function"
-	},
-	{
-		"constant": true,
-		"inputs": [
-			{
-				"name": "index",
-				"type": "uint256"
-			}
-		],
-		"name": "tokenByIndex",
-		"outputs": [
-			{
-				"name": "",
-				"type": "uint256"
-			}
-		],
-		"payable": false,
-		"stateMutability": "view",
-		"type": "function"
-	},
-	{
-		"constant": true,
-		"inputs": [
-			{
-				"name": "tokenId",
-				"type": "uint256"
-			}
-		],
-		"name": "ownerOf",
-		"outputs": [
-			{
-				"name": "",
-				"type": "address"
-			}
-		],
-		"payable": false,
-		"stateMutability": "view",
-		"type": "function"
-	},
-	{
-		"constant": false,
-		"inputs": [
-			{
-				"name": "id",
-				"type": "uint256"
-			}
-		],
-		"name": "burnLand",
-		"outputs": [],
-		"payable": false,
-		"stateMutability": "nonpayable",
-		"type": "function"
-	},
-	{
-		"constant": true,
-		"inputs": [
-			{
-				"name": "owner",
-				"type": "address"
-			}
-		],
-		"name": "balanceOf",
-		"outputs": [
-			{
-				"name": "",
-				"type": "uint256"
-			}
-		],
-		"payable": false,
-		"stateMutability": "view",
-		"type": "function"
-	},
-	{
-		"constant": false,
-		"inputs": [
-			{
-				"name": "to",
-				"type": "address"
-			},
-			{
-				"name": "approved",
-				"type": "bool"
-			}
-		],
-		"name": "setApprovalForAll",
-		"outputs": [],
-		"payable": false,
-		"stateMutability": "nonpayable",
-		"type": "function"
-	},
-	{
-		"constant": false,
-		"inputs": [
-			{
-				"name": "id",
-				"type": "uint256"
-			},
-			{
-				"name": "price",
-				"type": "uint256"
-			}
-		],
-		"name": "sellStart",
-		"outputs": [],
-		"payable": false,
-		"stateMutability": "nonpayable",
-		"type": "function"
-	},
-	{
-		"constant": true,
-		"inputs": [
-			{
-				"name": "id",
-				"type": "uint256"
-			}
-		],
-		"name": "isSellable",
-		"outputs": [
-			{
-				"name": "",
-				"type": "bool"
-			}
-		],
-		"payable": false,
-		"stateMutability": "view",
-		"type": "function"
-	},
-	{
-		"constant": true,
-		"inputs": [],
-		"name": "StateHash",
-		"outputs": [
-			{
-				"name": "",
-				"type": "string"
-			}
-		],
-		"payable": false,
-		"stateMutability": "view",
-		"type": "function"
-	},
-	{
-		"constant": false,
-		"inputs": [
-			{
-				"name": "from",
-				"type": "address"
-			},
-			{
-				"name": "to",
-				"type": "address"
-			},
-			{
-				"name": "tokenId",
-				"type": "uint256"
-			},
-			{
-				"name": "_data",
-				"type": "bytes"
-			}
-		],
-		"name": "safeTransferFrom",
-		"outputs": [],
-		"payable": false,
-		"stateMutability": "nonpayable",
-		"type": "function"
-	},
-	{
-		"constant": true,
-		"inputs": [],
-		"name": "userBidHash",
-		"outputs": [
-			{
-				"name": "",
-				"type": "string"
-			}
-		],
-		"payable": false,
-		"stateMutability": "view",
-		"type": "function"
-	},
-	{
-		"constant": true,
-		"inputs": [
-			{
-				"name": "id",
-				"type": "uint256"
-			},
-			{
-				"name": "bidNo",
-				"type": "uint256"
-			}
-		],
-		"name": "viewBidCount",
-		"outputs": [
-			{
-				"name": "",
-				"type": "uint256"
-			}
-		],
-		"payable": false,
-		"stateMutability": "view",
-		"type": "function"
-	},
-	{
-		"constant": false,
-		"inputs": [
-			{
-				"name": "id",
-				"type": "uint256"
-			}
-		],
-		"name": "sellEnd",
-		"outputs": [],
-		"payable": false,
-		"stateMutability": "nonpayable",
-		"type": "function"
-	},
-	{
-		"constant": true,
-		"inputs": [],
-		"name": "landCount",
-		"outputs": [
-			{
-				"name": "",
-				"type": "uint256"
-			}
-		],
-		"payable": false,
-		"stateMutability": "view",
-		"type": "function"
-	},
-	{
-		"constant": true,
-		"inputs": [
-			{
-				"name": "id",
-				"type": "uint256"
-			},
-			{
-				"name": "bidNo",
-				"type": "uint256"
-			}
-		],
-		"name": "viewBidPrice",
-		"outputs": [
-			{
-				"name": "",
-				"type": "uint256"
-			}
-		],
-		"payable": false,
-		"stateMutability": "view",
-		"type": "function"
-	},
-	{
-		"constant": true,
-		"inputs": [
-			{
-				"name": "id",
-				"type": "uint256"
-			}
-		],
-		"name": "getPrice",
-		"outputs": [
-			{
-				"name": "",
-				"type": "uint256"
-			}
-		],
-		"payable": false,
-		"stateMutability": "view",
-		"type": "function"
-	},
-	{
-		"constant": true,
-		"inputs": [
-			{
-				"name": "owner",
-				"type": "address"
-			},
-			{
-				"name": "operator",
-				"type": "address"
-			}
-		],
-		"name": "isApprovedForAll",
-		"outputs": [
-			{
-				"name": "",
-				"type": "bool"
-			}
-		],
-		"payable": false,
-		"stateMutability": "view",
-		"type": "function"
-	},
-	{
-		"inputs": [],
-		"payable": false,
-		"stateMutability": "nonpayable",
-		"type": "constructor"
-	},
-	{
-		"anonymous": false,
-		"inputs": [
-			{
-				"indexed": true,
-				"name": "from",
-				"type": "address"
-			},
-			{
-				"indexed": true,
-				"name": "to",
-				"type": "address"
-			},
-			{
-				"indexed": true,
-				"name": "tokenId",
-				"type": "uint256"
-			}
-		],
-		"name": "Transfer",
-		"type": "event"
-	},
-	{
-		"anonymous": false,
-		"inputs": [
-			{
-				"indexed": true,
-				"name": "owner",
-				"type": "address"
-			},
-			{
-				"indexed": true,
-				"name": "approved",
-				"type": "address"
-			},
-			{
-				"indexed": true,
-				"name": "tokenId",
-				"type": "uint256"
-			}
-		],
-		"name": "Approval",
-		"type": "event"
-	},
-	{
-		"anonymous": false,
-		"inputs": [
-			{
-				"indexed": true,
-				"name": "owner",
-				"type": "address"
-			},
-			{
-				"indexed": true,
-				"name": "operator",
-				"type": "address"
-			},
-			{
-				"indexed": false,
-				"name": "approved",
-				"type": "bool"
-			}
-		],
-		"name": "ApprovalForAll",
-		"type": "event"
-	}
+{
+	"constant": true,
+	"inputs": [
+		{
+			"name": "interfaceId",
+			"type": "bytes4"
+		}
+	],
+	"name": "supportsInterface",
+	"outputs": [
+		{
+			"name": "",
+			"type": "bool"
+		}
+	],
+	"payable": false,
+	"stateMutability": "view",
+	"type": "function"
+},
+{
+	"constant": false,
+	"inputs": [
+		{
+			"name": "id",
+			"type": "uint256"
+		},
+		{
+			"name": "bidNo",
+			"type": "uint256"
+		}
+	],
+	"name": "acceptBid",
+	"outputs": [],
+	"payable": false,
+	"stateMutability": "nonpayable",
+	"type": "function"
+},
+{
+	"constant": true,
+	"inputs": [
+		{
+			"name": "tokenId",
+			"type": "uint256"
+		}
+	],
+	"name": "getApproved",
+	"outputs": [
+		{
+			"name": "",
+			"type": "address"
+		}
+	],
+	"payable": false,
+	"stateMutability": "view",
+	"type": "function"
+},
+{
+	"constant": false,
+	"inputs": [
+		{
+			"name": "to",
+			"type": "address"
+		},
+		{
+			"name": "newStateHash",
+			"type": "string"
+		}
+	],
+	"name": "addLand",
+	"outputs": [],
+	"payable": false,
+	"stateMutability": "nonpayable",
+	"type": "function"
+},
+{
+	"constant": false,
+	"inputs": [
+		{
+			"name": "to",
+			"type": "address"
+		},
+		{
+			"name": "tokenId",
+			"type": "uint256"
+		}
+	],
+	"name": "approve",
+	"outputs": [],
+	"payable": false,
+	"stateMutability": "nonpayable",
+	"type": "function"
+},
+{
+	"constant": false,
+	"inputs": [
+		{
+			"name": "id",
+			"type": "uint256"
+		},
+		{
+			"name": "hash",
+			"type": "string"
+		}
+	],
+	"name": "bid",
+	"outputs": [],
+	"payable": true,
+	"stateMutability": "payable",
+	"type": "function"
+},
+{
+	"constant": true,
+	"inputs": [],
+	"name": "getBalance",
+	"outputs": [
+		{
+			"name": "",
+			"type": "uint256"
+		}
+	],
+	"payable": false,
+	"stateMutability": "view",
+	"type": "function"
+},
+{
+	"constant": true,
+	"inputs": [],
+	"name": "totalSupply",
+	"outputs": [
+		{
+			"name": "",
+			"type": "uint256"
+		}
+	],
+	"payable": false,
+	"stateMutability": "view",
+	"type": "function"
+},
+{
+	"constant": false,
+	"inputs": [
+		{
+			"name": "from",
+			"type": "address"
+		},
+		{
+			"name": "to",
+			"type": "address"
+		},
+		{
+			"name": "tokenId",
+			"type": "uint256"
+		}
+	],
+	"name": "transferFrom",
+	"outputs": [],
+	"payable": false,
+	"stateMutability": "nonpayable",
+	"type": "function"
+},
+{
+	"constant": true,
+	"inputs": [
+		{
+			"name": "owner",
+			"type": "address"
+		},
+		{
+			"name": "index",
+			"type": "uint256"
+		}
+	],
+	"name": "tokenOfOwnerByIndex",
+	"outputs": [
+		{
+			"name": "",
+			"type": "uint256"
+		}
+	],
+	"payable": false,
+	"stateMutability": "view",
+	"type": "function"
+},
+{
+	"constant": false,
+	"inputs": [],
+	"name": "withdraw",
+	"outputs": [],
+	"payable": false,
+	"stateMutability": "nonpayable",
+	"type": "function"
+},
+{
+	"constant": false,
+	"inputs": [
+		{
+			"name": "from",
+			"type": "address"
+		},
+		{
+			"name": "to",
+			"type": "address"
+		},
+		{
+			"name": "tokenId",
+			"type": "uint256"
+		}
+	],
+	"name": "safeTransferFrom",
+	"outputs": [],
+	"payable": false,
+	"stateMutability": "nonpayable",
+	"type": "function"
+},
+{
+	"constant": true,
+	"inputs": [
+		{
+			"name": "index",
+			"type": "uint256"
+		}
+	],
+	"name": "tokenByIndex",
+	"outputs": [
+		{
+			"name": "",
+			"type": "uint256"
+		}
+	],
+	"payable": false,
+	"stateMutability": "view",
+	"type": "function"
+},
+{
+	"constant": true,
+	"inputs": [
+		{
+			"name": "tokenId",
+			"type": "uint256"
+		}
+	],
+	"name": "ownerOf",
+	"outputs": [
+		{
+			"name": "",
+			"type": "address"
+		}
+	],
+	"payable": false,
+	"stateMutability": "view",
+	"type": "function"
+},
+{
+	"constant": false,
+	"inputs": [
+		{
+			"name": "id",
+			"type": "uint256"
+		}
+	],
+	"name": "burnLand",
+	"outputs": [],
+	"payable": false,
+	"stateMutability": "nonpayable",
+	"type": "function"
+},
+{
+	"constant": true,
+	"inputs": [
+		{
+			"name": "owner",
+			"type": "address"
+		}
+	],
+	"name": "balanceOf",
+	"outputs": [
+		{
+			"name": "",
+			"type": "uint256"
+		}
+	],
+	"payable": false,
+	"stateMutability": "view",
+	"type": "function"
+},
+{
+	"constant": true,
+	"inputs": [
+		{
+			"name": "id",
+			"type": "uint256"
+		}
+	],
+	"name": "viewBidCount",
+	"outputs": [
+		{
+			"name": "",
+			"type": "uint256"
+		}
+	],
+	"payable": false,
+	"stateMutability": "view",
+	"type": "function"
+},
+{
+	"constant": false,
+	"inputs": [
+		{
+			"name": "to",
+			"type": "address"
+		},
+		{
+			"name": "approved",
+			"type": "bool"
+		}
+	],
+	"name": "setApprovalForAll",
+	"outputs": [],
+	"payable": false,
+	"stateMutability": "nonpayable",
+	"type": "function"
+},
+{
+	"constant": false,
+	"inputs": [
+		{
+			"name": "id",
+			"type": "uint256"
+		},
+		{
+			"name": "price",
+			"type": "uint256"
+		}
+	],
+	"name": "sellStart",
+	"outputs": [],
+	"payable": false,
+	"stateMutability": "nonpayable",
+	"type": "function"
+},
+{
+	"constant": true,
+	"inputs": [
+		{
+			"name": "id",
+			"type": "uint256"
+		}
+	],
+	"name": "isSellable",
+	"outputs": [
+		{
+			"name": "",
+			"type": "bool"
+		}
+	],
+	"payable": false,
+	"stateMutability": "view",
+	"type": "function"
+},
+{
+	"constant": true,
+	"inputs": [],
+	"name": "StateHash",
+	"outputs": [
+		{
+			"name": "",
+			"type": "string"
+		}
+	],
+	"payable": false,
+	"stateMutability": "view",
+	"type": "function"
+},
+{
+	"constant": false,
+	"inputs": [
+		{
+			"name": "from",
+			"type": "address"
+		},
+		{
+			"name": "to",
+			"type": "address"
+		},
+		{
+			"name": "tokenId",
+			"type": "uint256"
+		},
+		{
+			"name": "_data",
+			"type": "bytes"
+		}
+	],
+	"name": "safeTransferFrom",
+	"outputs": [],
+	"payable": false,
+	"stateMutability": "nonpayable",
+	"type": "function"
+},
+{
+	"constant": true,
+	"inputs": [],
+	"name": "userBidHash",
+	"outputs": [
+		{
+			"name": "",
+			"type": "string"
+		}
+	],
+	"payable": false,
+	"stateMutability": "view",
+	"type": "function"
+},
+{
+	"constant": false,
+	"inputs": [
+		{
+			"name": "id",
+			"type": "uint256"
+		}
+	],
+	"name": "sellEnd",
+	"outputs": [],
+	"payable": false,
+	"stateMutability": "nonpayable",
+	"type": "function"
+},
+{
+	"constant": true,
+	"inputs": [],
+	"name": "landCount",
+	"outputs": [
+		{
+			"name": "",
+			"type": "uint256"
+		}
+	],
+	"payable": false,
+	"stateMutability": "view",
+	"type": "function"
+},
+{
+	"constant": true,
+	"inputs": [
+		{
+			"name": "id",
+			"type": "uint256"
+		},
+		{
+			"name": "bidNo",
+			"type": "uint256"
+		}
+	],
+	"name": "viewBidPrice",
+	"outputs": [
+		{
+			"name": "",
+			"type": "uint256"
+		}
+	],
+	"payable": false,
+	"stateMutability": "view",
+	"type": "function"
+},
+{
+	"constant": true,
+	"inputs": [
+		{
+			"name": "id",
+			"type": "uint256"
+		}
+	],
+	"name": "getPrice",
+	"outputs": [
+		{
+			"name": "",
+			"type": "uint256"
+		}
+	],
+	"payable": false,
+	"stateMutability": "view",
+	"type": "function"
+},
+{
+	"constant": true,
+	"inputs": [
+		{
+			"name": "owner",
+			"type": "address"
+		},
+		{
+			"name": "operator",
+			"type": "address"
+		}
+	],
+	"name": "isApprovedForAll",
+	"outputs": [
+		{
+			"name": "",
+			"type": "bool"
+		}
+	],
+	"payable": false,
+	"stateMutability": "view",
+	"type": "function"
+},
+{
+	"inputs": [],
+	"payable": false,
+	"stateMutability": "nonpayable",
+	"type": "constructor"
+},
+{
+	"anonymous": false,
+	"inputs": [
+		{
+			"indexed": true,
+			"name": "from",
+			"type": "address"
+		},
+		{
+			"indexed": true,
+			"name": "to",
+			"type": "address"
+		},
+		{
+			"indexed": true,
+			"name": "tokenId",
+			"type": "uint256"
+		}
+	],
+	"name": "Transfer",
+	"type": "event"
+},
+{
+	"anonymous": false,
+	"inputs": [
+		{
+			"indexed": true,
+			"name": "owner",
+			"type": "address"
+		},
+		{
+			"indexed": true,
+			"name": "approved",
+			"type": "address"
+		},
+		{
+			"indexed": true,
+			"name": "tokenId",
+			"type": "uint256"
+		}
+	],
+	"name": "Approval",
+	"type": "event"
+},
+{
+	"anonymous": false,
+	"inputs": [
+		{
+			"indexed": true,
+			"name": "owner",
+			"type": "address"
+		},
+		{
+			"indexed": true,
+			"name": "operator",
+			"type": "address"
+		},
+		{
+			"indexed": false,
+			"name": "approved",
+			"type": "bool"
+		}
+	],
+	"name": "ApprovalForAll",
+	"type": "event"
+}
 ];
 
 var contract = new web3.eth.Contract(abi);
 
-contract.options.address = '0x9ea588c47532652be22df2c2e5e7eb4cc607fefb';
+contract.options.address = '0x177b4a57928b7af60e0dbde7bc98a820994db45b';
 
 let addLand = async (to, newStateHash) => {
   let fCall = contract.methods.addLand(to, newStateHash);
@@ -669,10 +686,11 @@ let viewBids = (id) => {
 	});
 }
 
-let Bid = function (id, value, status) {
+let Bid = function (id, value, status, landowner) {
 	this.id = id;
 	this.value = value;
 	this.status = status;
+	this.landowner = landowner;
 }
 
 /*let userbids = [];
@@ -725,6 +743,7 @@ function clear() {
 }
 	/* Openlayers */
 var clickedLand = 0;
+var acceptingBidNo = 0;
 var clickedOwner = null;
 var total = 0;
 var user_bids = [];
@@ -860,7 +879,6 @@ function loadMap(g, f) {
 
   app_cont.addEventListener('click', (event) => {
   	let tar = event.target;
-		console.log(tar.parentNode);
 		if (tar.id == 'search-btn') {
 			let search_id = document.querySelector('#search-id').value;
 			if (source.getFeatureById(search_id) != null) {
@@ -884,9 +902,11 @@ function loadMap(g, f) {
 		}
 		if (tar.id == 'bid') {
 			let value = parseInt(document.querySelector('#bid-price').value, 10);
-			user_bids.push(new Bid(clickedLand, value, "Ongoing"));
-			ipfs.add(JSON.stringify(user_bids)).then((e) => {
-				bidLand(clickedLand, e[0].hash, value);
+			contract.methods.ownerOf(clickedLand).call().then((e) => {
+				user_bids.push(new Bid(clickedLand, value, "Ongoing", e));
+				ipfs.add(JSON.stringify(user_bids)).then((f) => {
+					bidLand(clickedLand, f[0].hash, value);
+				});
 			});
 		}
 		if (tar.className == 'property') {
@@ -1061,6 +1081,12 @@ function loadIndex() {
 				property.className = 'property';
 				property.id = f;
 				property.innerHTML = f;
+				let prop_cont = document.createElement('div');
+				prop_cont.className = 'hidden';
+				prop_cont.id = 'property' + f;
+
+
+
 				myprop.appendChild(property);
 			});
 		}
@@ -1074,19 +1100,6 @@ function loadIndex() {
 	let myacc = document.createElement('div');
 	myacc.id = 'bal';
 	myacc.className = 'hidden';
-	myacc.innerHTML = 'Withdrawable balance: '
-
-	let wd_btn = document.createElement('button');
-	wd_btn.id = "withdraw";
-	wd_btn.className = 'btn4';
-	wd_btn.innerHTML = 'WITHDRAW';
-	var amount = 0;
-
-	contract.methods.getBalance().call().then((e) => {
-		amount = e;
-		myacc.append(amount);
-		myacc.appendChild(wd_btn);
-	});
 
 	let sell_btn = document.createElement('button');
 	sell_btn.className = 'btn3';
@@ -1274,13 +1287,73 @@ function loadLogin() {
 
 loadIndex();
 
-function updateUserBid(i) {
-	contract.methods.ownerOf(i).call().then((e) => {
-		if (web3.eth.defaultAccount == e) {
-			user_bids[i].status = "Won";
-		}
-	});
+let viewSellerBids = async (g, cont) => {
+	for (i = 1; i <= g; i++) {
+		let seller_bid = document.createElement('div');
+		seller_bid.className = 'seller-bid';
+
+		let seller_bid_no = document.createElement('div');
+		seller_bid_no.className = 'seller-bid-no';
+		seller_bid_no.innerHTML = i.toString();
+
+		const bid_price = await contract.methods.viewBidPrice(clickedLand, i).call({
+			from: web3.eth.defaultAccount
+		});
+
+		let seller_bid_price = document.createElement('div');
+		seller_bid_price.className = 'seller-bid-price';
+		seller_bid_price.innerHTML = bid_price.toString();
+
+		seller_bid.appendChild(seller_bid_no);
+		seller_bid.appendChild(seller_bid_price);
+
+		let accept_bid = document.createElement('div');
+		accept_bid.innerHTML = 'ACCEPT BID';
+		accept_bid.className = 'hidden';
+		accept_bid.classList.add('accept-bid');
+
+		cont.appendChild(seller_bid);
+		cont.appendChild(accept_bid);
+	}
+	return cont;
 }
+
+let getUserBids = async(user_bids, cont) => {
+
+	for (i = 0; i < user_bids.length; i++) {
+		let owner = await contract.methods.ownerOf(user_bids[i].id).call();
+		if (web3.eth.defaultAccount == owner) {
+			user_bids[i].status = "Won";
+		} else {
+			if (owner != user_bids[i].landowner) {
+				user_bids[i].status = "Lost";
+			}
+		}
+
+		let user_bid = document.createElement('div');
+		user_bid.className = 'user-bid';
+
+		let user_bid_id = document.createElement('div');
+		user_bid_id.className = 'user-bid-id';
+
+		let user_bid_price = document.createElement('div');
+		user_bid_price.className = 'user-bid-price';
+
+		let user_bid_status = document.createElement('div');
+		user_bid_status.className = 'user-bid-status';
+
+		user_bid_id.innerHTML = (user_bids[i].id).toString();
+		user_bid_price.innerHTML = (user_bids[i].value).toString();
+		user_bid_status.innerHTML = user_bids[i].status;
+
+		user_bid.appendChild(user_bid_id);
+		user_bid.appendChild(user_bid_price);
+		user_bid.appendChild(user_bid_status);
+		cont.append(user_bid);
+	}
+	return cont;
+}
+
 
 window.addEventListener('click', (event) => {
 	let clicked = event.target;
@@ -1307,6 +1380,9 @@ window.addEventListener('click', (event) => {
 		}
 		if (username == 'Account3') {
 			web3.eth.defaultAccount = '0x857de78d86081490e38ab8b518d10126cf488216';
+		}
+		if (username == 'Developer') {
+			web3.eth.defaultAccount = '0x28eb22d0fa4ff0ef156f9d05819e9ce55cda5b23';
 		}
 		/* reload */
 		clear();
@@ -1355,10 +1431,37 @@ window.addEventListener('click', (event) => {
 		let acc = document.querySelector('#bal');
 		let display = window.getComputedStyle(acc, null).display;
 		if (display == 'none') {
+
+			let wd_btn = document.createElement('button');
+			wd_btn.id = "withdraw";
+			wd_btn.className = 'btn4';
+			wd_btn.innerHTML = 'WITHDRAW';
+
+			var amount = 0;
+			contract.methods.getBalance().call({
+				from: web3.eth.defaultAccount
+			}).then((e) => {
+				amount = e;
+				acc.append('Withdrawable balance: ' + amount);
+				acc.appendChild(wd_btn);
+			});
+
 			acc.style.display = 'flex';
 		} else {
+			acc.innerHTML = "";
 			acc.style.display = 'none';
 		}
+	}
+	if (clicked.id == 'withdraw') {
+		let fCall = contract.methods.withdraw();
+		fCall.estimateGas({
+			from: web3.eth.defaultAccount
+		}).then((e) => {
+			fCall.send({
+				from: web3.eth.defaultAccount,
+				gas: e
+			});
+		});
 	}
 	if (clicked.id == 'sell') {
 		let cont = document.querySelector('#sell-cont');
@@ -1376,6 +1479,20 @@ window.addEventListener('click', (event) => {
 								unsell_land.className = 'btn4';
 								unsell_land.innerHTML = 'CANCEL'
 								cont.appendChild(unsell_land);
+								cont.append("Current bids");
+								contract.methods.viewBidCount(clickedLand).call({
+									from: web3.eth.defaultAccount
+								}).then((g) => {
+									var bidnos = [];
+									if (g != 0) {
+										viewSellerBids(g, cont).then((h) => {cont = h});
+									} else {
+										let notice = document.createElement('p');
+										notice.className = 'notice';
+										notice.innerHTML = "No bids yet.";
+										cont.append(notice);
+									}
+								});
 							} else {
 								let sell_box = document.createElement('input');
 								sell_box.className = 'text-box';
@@ -1426,30 +1543,7 @@ window.addEventListener('click', (event) => {
 				if (e != "") {
 					getData(e).then((f) => {
 						user_bids = JSON.parse(f);
-						for (i = 0; i < user_bids.length; i++) {
-							updateUserBid(i);
-
-							let user_bid = document.createElement('div');
-							user_bid.className = 'user-bid';
-
-							let user_bid_id = document.createElement('div');
-							user_bid_id.className = 'user-bid-id';
-
-							let user_bid_price = document.createElement('div');
-							user_bid_price.className = 'user-bid-price';
-
-							let user_bid_status = document.createElement('div');
-							user_bid_status.className = 'user-bid-status';
-
-							user_bid_id.innerHTML = (user_bids[i].id).toString();
-							user_bid_price.innerHTML = (user_bids[i].value).toString();
-							user_bid_status.innerHTML = user_bids[i].status;
-
-							user_bid.appendChild(user_bid_id);
-							user_bid.appendChild(user_bid_price);
-							user_bid.appendChild(user_bid_status);
-							cont.append(user_bid);
-						}
+						getUserBids(user_bids, cont).then((g) => {cont = g});
 					});
 				} else {
 					let notice = document.createElement('p');
@@ -1464,7 +1558,117 @@ window.addEventListener('click', (event) => {
 			cont.style.display = 'none';
 		}
 	}
+	if (clicked.parentNode.className == 'seller-bid') {
+		let accept_btn = clicked.parentNode.nextSibling;
+		accept_btn.classList.toggle('hidden');
+		accept_btn.classList.toggle('btn4');
+	}
+	if (clicked.classList.contains('accept-bid')) {
+		let bid_no = clicked.previousSibling.querySelector('.seller-bid-no').innerHTML;
+		let bid_price = clicked.previousSibling.querySelector('.seller-bid-price').innerHTML;
+		acceptingBidNo = parseInt(bid_no, 10);
+		let accept_modal = document.createElement('div');
+		accept_modal.className = 'accept-modal';
+		accept_modal.id = 'accept-modal';
 
+		let accept_modal_content = document.createElement('div');
+		accept_modal_content.className = 'accept-modal-content';
+
+		let modal_title = document.createElement('span');
+		modal_title.className = 'confirm-notice';
+		modal_title.innerHTML = 'Accept Bid';
+
+		let summary_box = document.createElement('div');
+		summary_box.className = 'confirm-summary';
+
+		let int_bid_val = parseInt(bid_price, 10);
+		let int_tax_val = int_bid_val * 0.06;
+		let int_dev_val = int_bid_val * 0.02;
+
+		let int_total = int_bid_val - int_tax_val - int_dev_val;
+
+		let bid_summary = document.createElement('div');
+		bid_summary.className = 'summary-entry';
+
+		let bid_name = document.createElement('p');
+		bid_name.className = 'entry';
+		bid_name.innerHTML = 'Bid Total:';
+		let bid_val = document.createElement('p');
+		bid_val.className = 'entry';
+		bid_val.innerHTML = bid_price;
+
+		bid_summary.appendChild(bid_name);
+		bid_summary.appendChild(bid_val);
+
+		let tax_summary = document.createElement('div');
+		tax_summary.className = 'summary-entry';
+
+		let tax_name = document.createElement('p');
+		tax_name.className = 'entry';
+		tax_name.innerHTML = 'Sales Tax:';
+		let tax_val = document.createElement('p');
+		tax_val.className = 'entry';
+		tax_val.innerHTML = '-' + (int_tax_val).toString() + ' (6%)';
+
+		tax_summary.appendChild(tax_name);
+		tax_summary.appendChild(tax_val);
+
+		let dev_summary = document.createElement('div');
+		dev_summary.className = 'summary-entry';
+
+		let dev_name = document.createElement('p');
+		dev_name.className = 'entry';
+		dev_name.innerHTML = 'Service Fee:';
+		let dev_val = document.createElement('p');
+		dev_val.className = 'entry';
+		dev_val.innerHTML = '-' + (int_dev_val).toString() + ' (2%)';
+
+		dev_summary.appendChild(dev_name);
+		dev_summary.appendChild(dev_val);
+
+		let total_summary = document.createElement('div');
+		total_summary.className = 'summary-entry';
+		total_summary.id = 'total';
+
+		let total_name = document.createElement('p');
+		total_name.className = 'entry';
+		total_name.innerHTML = 'Total:';
+		let total_val = document.createElement('p');
+		total_val.className = 'entry';
+		total_val.innerHTML = (int_total).toString();
+
+		total_summary.appendChild(total_name);
+		total_summary.appendChild(total_val);
+
+		summary_box.appendChild(bid_summary);
+		summary_box.appendChild(tax_summary);
+		summary_box.appendChild(dev_summary);
+		summary_box.appendChild(total_summary);
+
+		let ok_btn = document.createElement('div');
+		ok_btn.className = 'btn4';
+		ok_btn.innerHTML = 'CONFIRM';
+		ok_btn.id = 'confirm-accept';
+		accept_modal_content.appendChild(modal_title);
+		accept_modal_content.appendChild(summary_box);
+		accept_modal_content.appendChild(ok_btn);
+
+		accept_modal.appendChild(accept_modal_content);
+
+		document.body.appendChild(accept_modal);
+	}
+
+	if (clicked.id == 'accept-modal') {
+		document.body.removeChild(clicked);
+	}
+	if (clicked.id == 'confirm-accept') {
+		accept_bid(clickedLand, acceptingBidNo).then((e) => {
+			let modal = document.querySelector('#accept-modal');
+			document.body.removeChild(modal);
+			clear();
+			loadIndex();
+		});
+	}
 	/* Handling web3 transactions */
 });
 

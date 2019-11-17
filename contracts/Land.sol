@@ -120,16 +120,12 @@ contract Land is ERC721Enumerable {
 
         require(balance != 0);
 
+        withdrawable[account] -= balance;
         account.transfer(balance);
     }
 
     function getBalance() public view returns (uint) {
         return withdrawable[msg.sender];
-    }
-
-    function burnLand(uint id) public {
-        require(ownerOf(id) == msg.sender);
-        _burn(ownerOf(id), id);
     }
 
     function bid(uint id, string memory hash) public payable {
