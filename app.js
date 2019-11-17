@@ -1431,7 +1431,7 @@ window.addEventListener('click', (event) => {
 		let acc = document.querySelector('#bal');
 		let display = window.getComputedStyle(acc, null).display;
 		if (display == 'none') {
-
+			acc.style.display = 'flex';
 			let wd_btn = document.createElement('button');
 			wd_btn.id = "withdraw";
 			wd_btn.className = 'btn4';
@@ -1445,8 +1445,6 @@ window.addEventListener('click', (event) => {
 				acc.append('Withdrawable balance: ' + amount);
 				acc.appendChild(wd_btn);
 			});
-
-			acc.style.display = 'flex';
 		} else {
 			acc.innerHTML = "";
 			acc.style.display = 'none';
@@ -1523,7 +1521,7 @@ window.addEventListener('click', (event) => {
 		let cont = document.querySelector('#bid-cont');
 		let display = window.getComputedStyle(cont, null).display;
 		if (display == 'none') {
-
+			cont.style.display = 'flex';
 			let bid_box = document.createElement('input');
 			bid_box.className = 'text-box';
 			bid_box.id = 'bid-price';
@@ -1552,7 +1550,6 @@ window.addEventListener('click', (event) => {
 					cont.append(notice);
 				}
 			});
-			cont.style.display = 'flex';
 		} else {
 			cont.innerHTML = "";
 			cont.style.display = 'none';

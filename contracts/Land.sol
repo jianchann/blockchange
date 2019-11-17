@@ -3,6 +3,8 @@ pragma solidity 0.5.3;
 import "./ERC721Enumerable.sol";
 
 contract Land is ERC721Enumerable {
+    using SafeMath for uint256;
+    using Address for address;
 
     struct LandPiece {
         uint id;
@@ -24,11 +26,13 @@ contract Land is ERC721Enumerable {
     mapping (address => string) userBid;
 
     address private owner;
+    address private dev;
     uint public landCount;
     string public StateHash;
 
     constructor () public {
         owner = msg.sender;
+        dev = 0x28eb22d0FA4FF0EF156f9D05819e9CE55cda5b23;
         landCount = 0;
         StateHash = "";
     }
@@ -55,7 +59,14 @@ contract Land is ERC721Enumerable {
 
         sellable[id] = false;
 
-        withdrawable[landowner] += bidPrice;
+        uint taxDeductible = bidPrice * 6 / 100;
+        uint serviceFee = bidPrice * 2 / 100;
+        uint total = bidPrice - taxDeductible - serviceFee;
+
+        withdrawable[owner] += taxDeductible;
+        withdrawable[dev] += serviceFee;
+
+        withdrawable[landowner] += total;
         withdrawable[bidder] -= bidPrice;
 
 
@@ -126,6 +137,11 @@ contract Land is ERC721Enumerable {
 
     function getBalance() public view returns (uint) {
         return withdrawable[msg.sender];
+    }
+
+    function burnLand(uint id) public {
+        require(ownerOf(id) == msg.sender);
+        _burn(ownerOf(id), id);
     }
 
     function bid(uint id, string memory hash) public payable {
