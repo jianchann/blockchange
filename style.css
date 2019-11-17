@@ -1,0 +1,687 @@
+::-webkit-scrollbar {
+    width: 0px;  /* Remove scrollbar space */
+    background: transparent;  /* Optional: just make scrollbar invisible */
+}
+/* Optional: show position indicator in red */
+
+
+body {
+	margin: 0;
+	padding: 0;
+}
+
+.ol-overlaycontainer {
+	text-align: center;
+}
+
+.land-id {
+	color: #23395d;
+	font-weight: bolder;
+	text-shadow: 1px 1px 0px #FFFFFF, 3px 2px 0px rgba(0,0,0,0.15);
+	font-family: 'Raleway', sans-serif;
+	padding: 5px;
+	font-size: 16px;
+}
+
+.header {
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: auto;
+
+	background-color: #152238;
+
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	z-index: 1;
+}
+
+.logo-btn {
+	margin: 7px;
+
+	width: 50px;
+	height: 50px;
+
+	background-image: url('assets/logo.png');
+	background-color: transparent;
+	background-position: center;
+	background-repeat: no-repeat;
+	background-size: 50px 50px;
+
+	border: none;
+
+	cursor: pointer;
+}
+
+.name {
+	font-family: 'Karla', sans-serif;
+	font-size: 38px;
+	margin: 0;
+
+	cursor: pointer;
+}
+
+.header .name {
+	color: white;
+}
+
+.nav-container {
+	height: auto;
+	width: auto;
+
+	display: flex;
+	justify-content: center;
+}
+
+.third {
+	width: 33.33%;
+	height: auto;
+
+	border: none;
+
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+
+.fifty {
+	width: 50%;
+	height: auto;
+
+	border: none;
+
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+
+#third1 {
+	justify-content: flex-start;
+}
+
+#fifty2 {
+	justify-content: flex-end;
+}
+
+.btn1 {
+	margin-left: 10px;
+	margin-right: 10px;
+	border: none;
+
+	font-size: 22px;
+	color: white;
+	background-color: transparent;
+	font-family: 'Raleway', sans-serif;
+
+	cursor: pointer;
+}
+
+.btn1:hover {
+	color: #ccc;
+}
+
+.landing-container {
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	position: absolute;
+
+	background-image: url('assets/bg.png');
+	background-position: center;
+	background-repeat: no-repeat;
+	background-size: cover;
+
+	border: none;
+
+	display: flex;
+}
+.landing-txt {
+	margin-left: 60px;
+	font-family: 'Montserrat', sans-serif;
+	font-size: 56px;
+	color: #777;
+}
+
+.login-container {
+	margin-right: 14px;
+	height: 60%;
+	width: 70%;
+
+	background-color: white;
+	border: solid 1px #ccc;
+	border-radius: 12px;
+	box-shadow: 5px 5px 5px 0px rgba(0,0,0,0.4);
+
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+}
+
+.login-txt {
+	font-family: 'Raleway', sans-serif;
+	font-size: 30px;
+	margin: 0;
+  margin-top: 10px;
+	margin-bottom: 20px;
+
+	color: black;
+}
+
+.login-container input {
+	margin: 18px;
+	padding: 6px;
+	border: none;
+	border-bottom: solid 1.5px #23395d;
+	font-size: 22px;
+	font-family: 'Raleway', sans-serif;
+
+	width: inherit;
+}
+
+#password {
+	margin-bottom: 0px;
+}
+
+
+.submit-btn {
+	border: none;
+	border-radius: 35px;
+
+	margin-top: 27px;
+	padding: 12px;
+
+	background-color: #1c2e4a;
+	color: white;
+
+	font-size: 22px;
+	font-family: 'Raleway', sans-serif;
+
+	cursor: pointer;
+}
+
+.submit-btn:hover {
+	background-color: #23395d;
+}
+
+#forgot-pw {
+	font-family: 'Raleway', sans-serif;
+	font-size: 10px;
+	margin: none;
+	margin-bottom: 17px;
+}
+
+#create-acc {
+	font-family: 'Raleway', sans-serif;
+	font-size: 16px;
+	margin-top: 25px;
+}
+
+.link {
+	text-decoration: none;
+}
+
+.link:hover {
+	text-decoration: underline;
+}
+
+.header2 {
+	width: 100%;
+	height: auto;
+	position: relative;
+	top: 0;
+	left: 0;
+
+	background-color: white;
+
+	display: flex;
+	justify-content: center;
+	align-items: center;
+
+	border-bottom: solid 1px #ccc;
+}
+
+.header2 .name {
+	color: #111;
+}
+
+#third1-2 {
+	justify-content: flex-start;
+}
+
+.greet {
+	margin: 0;
+
+	font-family: 'Montserrat', sans-serif;
+	font-size: 30px;
+	color: black;
+
+	animation:greet 0.5s 1;
+	-webkit-animation:greet 0.5s 1;
+	animation-fill-mode: forwards;
+
+	animation-delay: 2s;
+	-webkit-animation-delay:1s;
+    -webkit-animation-fill-mode: forwards;
+}
+
+@keyframes greet {
+	from {opacity :1;}
+	to {opacity: 0;}
+}
+
+@-webkit-keyframes greet {
+	from {opacity :1;}
+	to {opacity: 0;}
+}
+
+.btn2 {
+	margin-left: 10px;
+	margin-right: 10px;
+	border: none;
+
+	font-size: 19px;
+	color: #555;
+	background-color: transparent;
+	font-family: 'Raleway', sans-serif;
+
+	cursor: pointer;
+}
+
+.btn2:hover {
+	color: #000;
+}
+
+.twentyfive {
+	width: 25%;
+	height: auto;
+	padding: 0;
+
+	border: none;
+
+	display: flex;
+	flex-direction: column;
+	justify-content: flex-start;
+	align-content: center;
+	background-color: #23395d;
+	overflow-y: scroll;
+	overflow-x: hidden;
+}
+
+.seventyfive {
+	width: 75%;
+	height: auto;
+
+	border: none;
+
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+
+.app-container {
+	width: 100%;
+	height: 100%;
+	position: absolute;
+
+	border: none;
+
+	display: flex;
+}
+
+.map {
+	width: 100%;
+	height: 100%;
+}
+
+.btn3 {
+	border: none;
+
+	padding: 7px;
+
+	font-size: 20px;
+	color: white;
+	background-color: #23395d;
+	font-family: 'Montserrat', sans-serif;
+	text-align: center;
+
+
+	width: 100%;
+	height: auto;
+
+	cursor: pointer;
+}
+
+.btn3:hover {
+	font-weight: bolder;
+}
+
+.btn3-active {
+	font-weight: bolder;
+	background-color: #192841;
+}
+
+.btn4 {
+	border: solid 2px white;
+	border-radius: 15px;
+	width: 60%;
+
+
+  display: flex;
+  justify-content: center;
+
+	padding: 7px;
+	background-color: #23395d;
+	font-family: 'Bebas Neue', cursive;
+	font-size: 16px;
+	font-weight: bold;
+	color: white;
+
+	margin: 10px;
+	cursor: pointer;
+  transition: 0.3s;
+}
+
+.btn4:hover {
+	background-color: white;
+	color: #23395d;
+	border: solid 2px #23395d;
+}
+
+
+.hidden {
+	display: none;
+	width: 100%;
+	flex-direction: column;
+	justify-content: flex-start;
+	align-items: center;
+}
+
+
+.properties {
+	display: none;
+	width: 100%;
+	height: auto;
+	flex-direction: column;
+	justify-content: flex-start;
+	align-items: center;
+}
+
+.property {
+	width: 70%;
+	margin: 6px;
+	color: white;
+	font-family: 'Bebas Neue', cursive;
+	border: solid 1px white;
+	border-radius: 10px;
+
+	display: flex;
+	justify-content: center;
+
+	cursor: pointer;
+  transition: 0.3s;
+}
+
+.property:hover {
+	box-shadow: 0px 0px 10px 2px rgba(0,0,0,0.75);
+}
+
+.text-box {
+	height: inherit;
+	margin: 9px;
+	border: solid 1px #ccc;
+	border-radius: 9px;
+	padding: 8px;
+
+	font-size: 16px;
+}
+
+#bal {
+	text-align: center;
+	padding: 8px;
+	color: white;
+	font-family: 'Raleway', sans-serif;
+	font-size: 16px;
+}
+
+#sell-cont {
+	text-align: center;
+	padding: 8px;
+	color: white;
+	font-family: 'Raleway', sans-serif;
+	font-size: 16px;
+}
+#bid-cont {
+	text-align: center;
+	padding: 8px;
+	color: white;
+	font-family: 'Raleway', sans-serif;
+	font-size: 16px;
+}
+
+.sub-title {
+  text-align: center;
+	padding: 8px;
+	color: white;
+	font-family: 'Raleway', sans-serif;
+	font-size: 16px;
+  font-weight: bold;
+  margin: 7px;
+  padding: 5px;
+}
+
+.user-bid {
+	width: 90%;
+	margin: 6px;
+	color: white;
+	font-family: 'Bebas Neue', cursive;
+	border: solid 1px white;
+	border-radius: 10px;
+
+	display: flex;
+	justify-content: center;
+
+	cursor: pointer;
+  transition: 0.3s;
+}
+
+.user-bid:hover {
+  box-shadow: 0px 0px 10px 2px rgba(0,0,0,0.75);
+}
+
+.user-bid-id {
+  margin: 0;
+  padding: 0;
+  display: flex;
+  justify-content: center;
+  border: none;
+  border-right: solid 1px white;
+  width: 15%;
+}
+
+.user-bid-price {
+  margin: 0;
+  padding: 0;
+  display: flex;
+  justify-content: center;
+  border: none;
+  border-right: solid 1px white;
+  width: 20%;
+}
+
+.user-bid-status {
+  margin: 0;
+  padding: 0;
+  display: flex;
+  justify-content: center;
+  border: none;
+  width: 65%;
+}
+
+.notice {
+  color: #ccc;
+  font-size: 12px;
+}
+
+.seller-bid {
+	width: 90%;
+	margin: 6px;
+	color: white;
+	font-family: 'Bebas Neue', cursive;
+	border: solid 1px white;
+	border-radius: 10px;
+
+	display: flex;
+	justify-content: center;
+
+	cursor: pointer;
+  transition: 0.3s;
+}
+
+.seller-bid:hover {
+  box-shadow: 0px 0px 10px 2px rgba(0,0,0,0.75);
+}
+
+.seller-bid-no {
+  margin: 0;
+  padding: 0;
+  display: flex;
+  justify-content: center;
+  border: none;
+  border-right: solid 1px white;
+  width: 25%;
+}
+
+.seller-bid-price {
+  margin: 0;
+  padding: 0;
+  display: flex;
+  justify-content: center;
+  border: none;
+  width: 75%;
+}
+
+.modal {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  top: 0;
+  left: 0;
+
+  position: fixed;
+  z-index: 10;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  background-color: rgb(0,0,0); /* Fallback color */
+  background-color: rgba(0,0,0,0.4);
+}
+
+.modal-content {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+
+  background-color: white;
+  padding: 20px;
+  border: none;
+  border-radius: 12px;
+  width: 30%;
+  height: auto;
+}
+
+.confirm-notice {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 20px;
+  color: black;
+}
+
+.confirm-summary {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+
+  width: 80%;
+  height: auto;
+
+  border: solid 1px black;
+  border-radius: 15px;
+  padding: 8px;
+}
+
+.summary-entry {
+  margin: 5px;
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+}
+
+.entry {
+  margin: 0;
+  font-size: 16px;
+  color: #555;
+  font-family: 'Roboto', sans-serif;
+}
+
+#total .entry {
+  color: black;
+}
+
+#total {
+  border-top: solid 1px #ccc;
+  padding-top: 5px;
+  font-size: 19px;
+  font-weight: bold;
+}
+
+#confirm-accept {
+  border-radius: 16px;
+  margin: 10px;
+  width: 30%;
+  padding: 7px;
+
+  font-size: 22px;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+
+
+.lbl {
+  display: flex;
+  justify-content: center;
+	border: solid 2px white;
+	border-radius: 15px;
+	width: 45%;
+
+
+	padding: 7px;
+	background-color: #23395d;
+	font-family: 'Bebas Neue', cursive;
+	font-size: 16px;
+	font-weight: bold;
+	color: white;
+
+	margin: 10px;
+	cursor: pointer;
+  transition: 0.3s;
+}
+
+.lbl:hover {
+	background-color: white;
+	color: #23395d;
+	border: solid 2px #23395d;
+}
+
+
+#deed-submit {
+  display: none;
+}

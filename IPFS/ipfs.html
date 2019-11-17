@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <script src="https://unpkg.com/ipfs-http-client/dist/index.js"></script>
+  <title>Upload to IPFS</title>
+</head>
+<body>
+  <form id="myForm" action="https://k0bcyxppvu:uuC2uImKjSwk_hUs6ciooZOjuXolBUHMvCa6tBQlJgQ@k0azo7vjl7-k0o4rrkwqs-ipfs.kr0-aws.kaleido.io/api/v0/add" enctype="multipart/form-data" method="post">
+    <input type="file" name="path" id="file" accept="image/*,.txt"/>
+    <input type="submit"/>
+  </form>
+  <!-- <img src="https://k0azo7vjl7-k0o4rrkwqs-ipfs.kr0-aws.kaleido.io/ipfs/{hash}"> -->
+  <script>
+  const ipfs = window.IpfsHttpClient({
+  	host: "k0azo7vjl7-k0o4rrkwqs-ipfs.kr0-aws.kaleido.io",
+  	protocol: "https",
+  	port: "",
+  	headers: {
+  		Authorization: "Basic " + btoa("k0bcyxppvu:uuC2uImKjSwk_hUs6ciooZOjuXolBUHMvCa6tBQlJgQ")
+  	}
+  });
+  let myForm = document.querySelector("#myForm");
+  myForm.addEventListener('submit', (e) => {
+    e.preventDefault();
+    let input = document.querySelector("#file");
+    var file = input.files[0];
+    ipfs.add(file).then((e) => {
+      let item = document.createElement("img");
+      item.src = "https://k0azo7vjl7-k0o4rrkwqs-ipfs.kr0-aws.kaleido.io/ipfs/" + e[0].hash;
+      document.body.appendChild(item);
+    })
+    /*var data = new FormData(myForm);
+
+    var http = new XMLHttpRequest();
+    http.open("POST", "https://k0azo7vjl7-k0o4rrkwqs-ipfs.kr0-aws.kaleido.io/api/v0/add", true);
+    http.setRequestHeader("Authorization", "Basic " + btoa("k0bcyxppvu:uuC2uImKjSwk_hUs6ciooZOjuXolBUHMvCa6tBQlJgQ"));
+    http.onload = function () {
+      let upload_hash = JSON.parse(this.response).Hash;
+      console.log(JSON.parse(this.response).Hash);
+      let item = document.createElement("img");
+      item.src = "https://k0azo7vjl7-k0o4rrkwqs-ipfs.kr0-aws.kaleido.io/ipfs/" + upload_hash;
+      document.body.appendChild(item);
+    }
+    http.send(file); */
+
+
+    /*fetch("https://k0azo7vjl7-k0o4rrkwqs-ipfs.kr0-aws.kaleido.io/api/v0/add", {
+      method: 'POST',
+      headers: {
+        "Authorization": "Basic " + btoa("k0bcyxppvu:uuC2uImKjSwk_hUs6ciooZOjuXolBUHMvCa6tBQlJgQ"),
+        "Content-Type": "text/plain"
+      },
+      body: data
+    }).then(
+      response => response.json()
+    ).then(
+      success => console.log(success)
+    ).catch(
+      error => console.log(error)
+    );*/
+  });
+      /*http.open("POST", "https://k0azo7vjl7-k0o4rrkwqs-ipfs.kr0-aws.kaleido.io/api/v0/add", true);
+      http.setRequestHeader("Content-Type", "text/plain");
+      //http.setRequestHeader("Content-Disposition", "path='" + input.value + "'");
+      http.setRequestHeader("Authorization", "Basic " + btoa("k0bcyxppvu:uuC2uImKjSwk_hUs6ciooZOjuXolBUHMvCa6tBQlJgQ"));
+      console.log(http);
+      data.append('file', file);
+      http.send(file);
+  });*/
+  </script>
+</body>
+</html>
